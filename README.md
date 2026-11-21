@@ -127,6 +127,6 @@ Windows 方式在欢迎向导里直接选即可。云端语音只在你开启语
 
 ## 许可证与致谢
 
-本仓库目前还没有选定开源许可证。在根目录补上 `LICENSE` 之前，默认保留所有权利。
+你可以把这个仓库克隆到自己的电脑上安装和运行，论文、笔记和 API Key 不会跟着仓库一起下载。请不要把源码再发布成其他产品。
 
-界面运行在 Electron 上，研究对话使用 [DeepSeek Harness](third-party/harness/README.md)。PDF 阅读使用 PDF.js。这些依赖保留各自的许可证。
+界面运行在 Electron 上，研究对话使用 [DeepSeek Harness](third-party/harness/README.md)，PDF 阅读使用 PDF.js。这些组件适用它们各自的许可证。

@@ -1,0 +1,29 @@
+.voice-sr-only { position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important; }
+.voice-minimal .voice-heading { padding:28px 32px 0;align-items:center; }
+.voice-heading-mark { display:flex;align-items:center;color:var(--faint); }
+.voice-minimal .voice-icon,.voice-minimal .voice-icon-select { position:relative;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:38px;height:38px;min-width:38px;min-height:38px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--muted);box-shadow:none; }
+.voice-minimal .voice-icon:hover,.voice-minimal .voice-icon-select:hover { background:var(--control-hover);color:var(--text); }
+.voice-minimal [data-tooltip]:after { content:attr(data-tooltip);position:absolute;z-index:40;top:calc(100% + 9px);left:50%;translate:-50% 0;width:max-content;max-width:270px;white-space:pre-line;overflow-wrap:anywhere;padding:7px 11px;border-radius:9px;background:var(--tooltip-bg);color:var(--tooltip-text);font-size:11px;font-weight:400;line-height:1.6;box-shadow:var(--float-shadow);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s ease,visibility .12s ease; }
+.voice-minimal [data-tooltip]:is(:hover,:focus):after { opacity:1;visibility:visible; }
+.voice-minimal .voice-heading-actions [data-tooltip]:after { left:auto;right:0;translate:0; }
+.voice-toolbar { position:relative;z-index:3;display:flex;justify-content:center;align-items:center;width:fit-content;max-width:calc(100% - 48px);gap:10px;margin:16px auto 0;padding:4px 9px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--glass-field) 40%,transparent); }
+.voice-minimal .voice-context-controls,.voice-minimal .voice-device-controls { display:flex;flex-direction:row;align-items:center;gap:5px;width:auto;max-width:none;padding:0;margin:0; }
+.voice-minimal .voice-context-controls { padding-right:10px;border-right:1px solid var(--line); }
+.voice-minimal .voice-microphone-control,.voice-minimal .voice-output-control { display:flex;width:auto!important;flex:none;min-width:0;gap:4px;margin:0; }
+.voice-minimal .voice-select { flex:none;min-width:0; }
+.voice-minimal .voice-select-menu { width:260px;max-width:calc(100vw - 80px);right:auto;left:0; }
+.voice-minimal .voice-output-control .voice-select-menu { left:auto;right:0; }
+.voice-minimal .voice-stage { min-height:calc(100% - 170px);gap:0;padding:12px 26px 38px; }
+.voice-minimal .voice-status { margin:6px 0;font-size:14px;font-weight:500; }
+.voice-minimal .voice-hint { max-width:540px;margin:6px 0 10px;font-size:11px;line-height:1.7; }
+.voice-minimal .voice-controls { min-height:64px;align-items:center;gap:18px;margin:22px 0 20px; }
+.voice-minimal .voice-controls .voice-start { width:60px;height:60px;min-height:60px;padding:0;border-radius:50%;background:var(--accent-fill);color:white;box-shadow:0 8px 24px var(--accent-soft),inset 0 1px #fff4; }
+.voice-minimal .voice-controls .voice-start:hover { background:var(--accent-fill-hover); }
+.voice-minimal .voice-controls [data-tooltip]:after { top:auto;bottom:calc(100% + 12px); }
+.voice-minimal .voice-caption { min-height:0;margin:12px 0 0;max-height:120px; }
+.voice-minimal-footer { display:flex;align-items:center;justify-content:space-between;padding:0 26px 20px; }
+.voice-minimal .voice-appearance { position:relative;max-width:none;margin:0;color:var(--muted); }
+.voice-minimal-footer [data-tooltip]:after { top:auto;bottom:calc(100% + 10px);left:auto;right:0;translate:0; }
+.voice-minimal-footer .voice-info:after { left:0;right:auto; }
+@media(max-width:700px) { .voice-minimal .voice-heading { padding:22px 24px 0; }.voice-toolbar { gap:5px;padding:4px; }.voice-minimal .voice-context-controls { padding-right:5px; }.voice-minimal .voice-select-menu { width:230px; }.voice-minimal .voice-stage { padding-inline:20px; }.voice-minimal [data-tooltip]:after { max-width:210px; } }
+@media(prefers-reduced-motion:reduce) { .voice-minimal [data-tooltip]:after { transition:none; } }

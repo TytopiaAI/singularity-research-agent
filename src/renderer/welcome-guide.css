@@ -1,0 +1,77 @@
+.welcome-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: rgba(42, 36, 28, .42);
+}
+.welcome-card {
+  width: min(540px, 100%);
+  padding: 32px 32px 24px;
+  border: 1px solid #E8DED1;
+  border-radius: 28px;
+  background: #FFFCF8;
+  box-shadow: 0 28px 80px rgba(42, 36, 28, .18);
+  color: #3A3428;
+}
+.welcome-progress {
+  margin: 0 0 10px;
+  color: #8A8172;
+  font-size: 12px;
+}
+.welcome-mark {
+  display: block;
+  width: 180px;
+  height: 128px;
+  margin: 4px auto 10px;
+}
+.welcome-card h1 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  font-weight: 580;
+  letter-spacing: -.03em;
+}
+.welcome-card p {
+  margin: 0;
+  color: #6F675C;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.welcome-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+.welcome-form label {
+  display: grid;
+  gap: 6px;
+  color: #8A8172;
+  font-size: 12px;
+}
+.welcome-form input,
+.welcome-form select {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #E8DED1;
+  border-radius: 12px;
+  background: #FBF6EF;
+  color: #3A3428;
+  font: inherit;
+}
+.welcome-message {
+  margin-top: 12px;
+  color: #9B3D2E;
+  font-size: 13px;
+}
+.welcome-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .welcome-guide { background: rgba(42, 36, 28, .55); }
+}

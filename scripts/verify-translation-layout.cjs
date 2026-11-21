@@ -1,0 +1,65 @@
+/* Real-paper layout regression in an isolated cache. No AI requests or installed-data writes.
+   electron scripts/verify-translation-layout.cjs --pdf <source.pdf> --cache <translation.json> */
+const { app, BrowserWindow, protocol } = require('electron')
+const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict')
+const { pathToFileURL } = require('node:url'), { createHash } = require('node:crypto')
+const root = path.resolve(__dirname, '..'), output = path.join(root, '.local-data', 'translation-layout-verification', String(Date.now()))
+fs.mkdirSync(output, { recursive: true }); app.setPath('userData', path.join(output, 'electron-data'))
+protocol.registerSchemesAsPrivileged([{ scheme: 'singularity-layout', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true } }])
+const argument = (name) => process.argv[process.argv.indexOf(name) + 1]
+const pdfFile = argument('--pdf'), cacheFile = argument('--cache')
+const hash = (file) => createHash('sha256').update(fs.readFileSync(file)).digest('hex')
+const report = { output, checks: [], errors: [] }, wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+async function until(check, label) { for (let i = 0; i < 200; i++) { if (await check()) return; await wait(50) } throw Error(`Timeout: ${label}`) }
+async function main() {
+  assert(process.argv.includes('--pdf') && process.argv.includes('--cache'), '--pdf and --cache required')
+  const originals = { pdf: hash(pdfFile), cache: hash(cacheFile) }
+  const old = JSON.parse(fs.readFileSync(cacheFile, 'utf8')), artifacts = path.join(output, 'artifacts'), cacheDir = path.join(artifacts, 'paper')
+  fs.mkdirSync(cacheDir, { recursive: true }); fs.copyFileSync(cacheFile, path.join(cacheDir, `translation-v1-${old.checksum}.json`))
+  const esbuild = require('esbuild')
+  await esbuild.build({ entryPoints: [path.join(root, 'src/main/document-translation.ts')], bundle: true, platform: 'node', packages: 'external', format: 'esm', outfile: path.join(output, 'extractor.mjs'), logLevel: 'silent' })
+  const { DocumentTranslationService } = await import(pathToFileURL(path.join(output, 'extractor.mjs')).href)
+  const service = new DocumentTranslationService(artifacts, () => ({ id: 'paper', checksum: old.checksum, sourcePath: pdfFile, indexStatus: 'ready' }), async () => { throw Error('Unexpected AI request') })
+  const document = await service.get('paper'), page4 = document.blocks.filter((block) => block.parts[0].page === 4)
+  assert.equal(page4.filter((block) => block.kind === 'formula').length, 3)
+  assert(!page4.some((block) => block.kind === 'paragraph' && /^(?:\(\d+\)|i|m \(ℓ\))$/.test(block.text)))
+  assert(!document.blocks.some((block) => block.kind === 'paragraph' && /^\(\d+\)$/.test(block.text)))
+  assert(page4.findIndex((block) => block.text.startsWith('3.2 ')) > page4.findIndex((block) => block.text.startsWith('The multimodal state')))
+  report.checks.push('Real PDF page 4: three complete source equations including numbers; no isolated script/number translation cards; section 3.2 follows section 3.1')
+  assert(Object.keys(document.translations).length > 0)
+  assert.deepEqual((await new DocumentTranslationService(artifacts, () => ({ id: 'paper', checksum: old.checksum }), async () => { throw Error('Unexpected AI request') }).get('paper')).translations, document.translations)
+  report.reusedTranslations = Object.keys(document.translations).length
+  report.checks.push('Old-cache migration reuses saved translations, backs up the old layout and survives reopening without model requests')
+  const citation = { id: 'citation-fixture', scope: 'body', kind: 'paragraph', text: 'Prior work<sup>12–14</sup> defines h<sub>t</sub>.', parts: [{ page: 4, rects: [{ x: .1, y: .1, width: .5, height: .02 }] }] }
+  const preview = { ...document, blocks: [citation, ...page4], translations: { ...document.translations, [citation.id]: '前人工作<sup>12–14</sup>定义了状态 h<sub>t</sub>。' } }
+  await esbuild.build({ entryPoints: [path.join(root, 'scripts/fixtures/translation-layout.tsx')], bundle: true, format: 'esm', platform: 'browser', loader: { '.woff2': 'file', '.woff': 'file', '.ttf': 'file' }, target: 'chrome140', jsx: 'automatic', outfile: path.join(output, 'fixture.js'), logLevel: 'warning' })
+  fs.writeFileSync(path.join(output, 'index.html'), `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><link rel="stylesheet" href="fixture.css"></head><body><div id="root"></div><script>window.layoutTest=${JSON.stringify({ document: preview, worker: pathToFileURL(require.resolve('pdfjs-dist/build/pdf.worker.mjs')).href }).replaceAll('<', '\\u003c')}</script><script type="module" src="fixture.js"></script></body></html>`)
+  await app.whenReady()
+  protocol.handle('singularity-layout', () => new Response(fs.readFileSync(pdfFile), { headers: { 'Content-Type': 'application/pdf', 'Access-Control-Allow-Origin': '*' } }))
+  const win = new BrowserWindow({ width: 1540, height: 1050, show: false, webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false, backgroundThrottling: false, offscreen: true } })
+  win.webContents.on('console-message', (event) => { if (event.level === 'error') report.errors.push(event.message) })
+  await win.loadFile(path.join(output, 'index.html'))
+  const js = (code) => win.webContents.executeJavaScript(code, true)
+  await until(() => js(`document.querySelector('.document-translation-result sup')?.textContent==='12–14'`), 'citation markup')
+  assert.equal(await js(`document.querySelector('.document-translation-result sub').textContent`), 't')
+  assert(!(await js(`document.querySelector('.document-translation-result').textContent`)).includes('<sup>'))
+  const colors = await js(`(()=>{const card=document.querySelector('[data-review-key="method"]');const style=getComputedStyle(card);return {background:style.backgroundColor,foreground:style.color,border:style.borderColor}})()`)
+  report.lightColors = colors
+  const lightChannels = colors.background.match(/[\d.]+/g).map(Number)
+  assert(lightChannels.every((value) => value > .94), 'Summary card background should stay close to white')
+  await wait(150); fs.writeFileSync(path.join(output, 'light-cards-and-citations.png'), (await win.webContents.capturePage()).toPNG())
+  await js(`document.querySelector('.block-formula').scrollIntoView({block:'center'})`)
+  await until(() => js(`Boolean(document.querySelector('.translation-equation .katex'))`), 'native formula reconstruction')
+  await wait(150); fs.writeFileSync(path.join(output, 'page4-equations.png'), (await win.webContents.capturePage()).toPNG())
+  await js(`document.documentElement.dataset.theme='dark'`); await wait(150)
+  report.darkColors = await js(`(()=>{const style=getComputedStyle(document.querySelector('[data-review-key="method"]'));return {background:style.backgroundColor,foreground:style.color}})()`)
+  assert.equal(report.darkColors.foreground, 'rgb(245, 245, 247)')
+  fs.writeFileSync(path.join(output, 'dark-cards-and-equations.png'), (await win.webContents.capturePage()).toPNG())
+  report.checks.push('Chromium renders citation superscripts/subscripts as inline elements and full equations as native mathematical content; pale card backgrounds verified in light and dark themes')
+  assert.equal(hash(pdfFile), originals.pdf); assert.equal(hash(cacheFile), originals.cache)
+  report.checks.push('Original PDF and installed translation cache hashes unchanged')
+  win.close()
+}
+main().catch((error) => { report.errors.push(String(error)); console.error(error) }).finally(() => {
+  fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2)); console.log(JSON.stringify(report, null, 2)); app.exit(report.errors.length ? 1 : 0)
+})

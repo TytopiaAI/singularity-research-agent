@@ -1,0 +1,53 @@
+.voice-pet { --pet-energy:0;--pet-look-x:0px;--pet-look-y:0px;--pet-look-px:0px;--pet-look-py:0px;display:block;position:relative;flex-shrink:0;width:min(360px,60vw,36vh);aspect-ratio:1;margin:0;padding:0!important;border:0!important;border-radius:36%;background:transparent!important;box-shadow:none!important;color:var(--text);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent; }
+.voice-pet svg { display:block;width:100%;height:100%;overflow:visible;pointer-events:none; }
+.voice-pet:focus-visible { outline:2px solid var(--accent);outline-offset:3px; }
+.pet-eye { stroke-width:20;stroke-linejoin:round;stroke-linecap:round; }
+.pet-float { transform-origin:240px 385px;animation:pet-breathe 4.8s ease-in-out infinite; }
+.pet-audio-body { transform-origin:240px 385px;transform:translateY(calc(var(--pet-energy) * -7px)) scaleX(calc(1 + var(--pet-energy) * .025)) scaleY(calc(1 - var(--pet-energy) * .045)); }
+.pet-gesture { transform-origin:240px 370px; }
+.voice-pet[data-gesture="hop"] .pet-gesture { animation:pet-hop .9s ease-in-out; }
+.voice-pet[data-gesture="tilt"] .pet-gesture { animation:pet-tilt 1.5s ease-in-out; }
+.voice-pet[data-gesture="nod"] .pet-gesture { animation:pet-nod .65s ease-in-out 2; }
+.voice-pet[data-gesture="sway"] .pet-gesture { animation:pet-sway .6s ease-in-out 2; }
+.voice-pet[data-gesture="peek"] .pet-gesture { animation:pet-peek 1.6s ease-in-out; }
+.voice-pet[data-gesture="jelly"] .pet-gesture { animation:pet-jelly .9s ease-in-out; }
+.voice-pet[data-gesture="yawn"] .pet-gesture { animation:pet-yawn 1.7s ease-in-out; }
+/* Gaze is smoothed in JS (time-based easing); a CSS transition here would double it. */
+.pet-eye-look { transform:translate(var(--pet-look-x),var(--pet-look-y)); }
+.pet-eye-blink { transform-origin:240px 265px;animation:pet-blink 6.2s infinite; }
+.pet-left-eye,.pet-right-eye { transform-box:fill-box;transform-origin:center;transition:transform .28s cubic-bezier(.2,.8,.2,1); }
+/* Independent translate property composes with the mood transforms above. */
+.pet-left-eye { translate:calc(var(--pet-look-px) * -1) calc(var(--pet-look-py) * -1); }
+.pet-right-eye { translate:var(--pet-look-px) var(--pet-look-py); }
+.voice-pet[data-mood="attentive"] .pet-left-eye { transform:rotate(-5deg) scaleY(1.06); }.voice-pet[data-mood="attentive"] .pet-right-eye { transform:rotate(4deg) scaleY(1.06); }
+.voice-pet[data-mood="curious"] .pet-left-eye { transform:rotate(8deg) scaleY(.76); }.voice-pet[data-mood="curious"] .pet-right-eye { transform:rotate(-4deg) scaleY(1.05); }
+.voice-pet[data-mood="concerned"] .pet-left-eye { transform:rotate(-9deg) scaleY(.8); }.voice-pet[data-mood="concerned"] .pet-right-eye { transform:rotate(9deg) scaleY(.8); }
+.voice-pet[data-mood="delighted"] .pet-left-eye { transform:rotate(7deg) scaleY(.82); }.voice-pet[data-mood="delighted"] .pet-right-eye { transform:rotate(-7deg) scaleY(.82); }
+.voice-pet[data-mood="wink"] .pet-left-eye { transform:scaleY(1.05); }.voice-pet[data-mood="wink"] .pet-right-eye { transform:rotate(-5deg) scaleY(.12); }
+.voice-pet[data-mood="inspired"] .pet-left-eye { transform:rotate(-4deg) scaleY(1.08); }.voice-pet[data-mood="inspired"] .pet-right-eye { transform:rotate(4deg) scaleY(1.08); }
+.voice-pet[data-mood="happy"] .pet-left-eye { transform:rotate(9deg) scaleY(.55); }.voice-pet[data-mood="happy"] .pet-right-eye { transform:rotate(-9deg) scaleY(.55); }
+.voice-pet[data-mood="shy"] .pet-left-eye { transform:translate(8px,7px) scaleY(.7); }.voice-pet[data-mood="shy"] .pet-right-eye { transform:translate(-8px,7px) scaleY(.7); }
+.voice-pet[data-mood="surprised"] .pet-left-eye,.voice-pet[data-mood="surprised"] .pet-right-eye { transform:scale(.9,1.13); }
+.voice-pet[data-mood="sleepy"] .pet-left-eye,.voice-pet[data-mood="sleepy"] .pet-right-eye { transform:translateY(6px) scaleY(.18); }
+.voice-pet[data-phase="speaking"] .pet-left-eye { transform:scaleY(calc(1 - var(--pet-energy) * .12)); }.voice-pet[data-phase="speaking"] .pet-right-eye { transform:scaleY(calc(1 - var(--pet-energy) * .09)); }
+.voice-pet[data-mood="wink"][data-phase="speaking"] .pet-right-eye { transform:scaleY(.12); }
+.pet-ground { transform-origin:center;transform:scaleX(calc(1 + var(--pet-energy) * .08)); }
+.pet-thought { transform-origin:332px 105px;animation:pet-thought-arrive .28s cubic-bezier(.2,.9,.2,1.3) both; }
+.pet-question,.pet-surprise { color:var(--text);fill:currentColor;stroke:currentColor;stroke-width:6;stroke-linecap:round; }
+.pet-question > path,.pet-surprise > path { fill:none; }.pet-question > circle,.pet-surprise > circle { stroke:none; }
+.pet-accent-mark { opacity:.4;stroke-width:3!important; }
+.pet-bulb-glass { fill:#ffe08b;stroke:#be8526;stroke-width:3.4;stroke-linejoin:round;filter:drop-shadow(0 0 5px #ffe08b66); }
+.pet-bulb-detail { fill:none;stroke:#ae7c30;stroke-width:3;stroke-linecap:round;stroke-linejoin:round; }
+.pet-heart { fill:#ef5a6e;stroke:#b93650;stroke-width:2;stroke-linejoin:round; }
+@keyframes pet-hop { 0%,100% { transform:translateY(0) scale(1); }20% { transform:scale(1.06,.92); }52% { transform:translateY(-18px) scale(.98,1.04); }80% { transform:scale(1.04,.96); } }
+@keyframes pet-tilt { 0%,100% { transform:rotate(0); }30%,70% { transform:rotate(-7deg); } }
+@keyframes pet-nod { 0%,100% { transform:scaleY(1); }50% { transform:translateY(4px) scaleY(.94); } }
+@keyframes pet-sway { 0%,100% { transform:rotate(0); }25% { transform:rotate(-4deg); }75% { transform:rotate(4deg); } }
+@keyframes pet-peek { 0%,100% { transform:translateY(0); }35%,65% { transform:translateY(8px) rotate(3deg) scale(.97); } }
+@keyframes pet-jelly { 0%,100% { transform:scale(1); }25% { transform:scale(1.08,.91); }50% { transform:scale(.95,1.05); }75% { transform:scale(1.02,.98); } }
+@keyframes pet-yawn { 0%,100% { transform:rotate(0) scaleY(1); }40%,70% { transform:rotate(-3deg) scaleY(.96); } }
+@keyframes pet-breathe { 0%,100% { transform:translateY(1px) rotate(-.8deg); }50% { transform:translateY(-4px) rotate(.8deg); } }
+@keyframes pet-blink { 0%,83%,88%,100% { transform:scaleY(1); }85%,86% { transform:scaleY(.08); } }
+@keyframes pet-thought-arrive { from { opacity:0;transform:translateY(7px) scale(.7); }to { opacity:1;transform:translateY(0) scale(1); } }
+@media (max-height:720px) { .voice-workspace .voice-pet { width:220px; } }
+@media (prefers-reduced-motion:reduce) { .voice-pet .pet-float,.voice-pet .pet-eye-blink,.voice-pet .pet-thought,.voice-pet[data-gesture] .pet-gesture { animation:none; }.pet-audio-body { transform:none; }.pet-left-eye,.pet-right-eye,.pet-eye-look { transition:none; } }

@@ -1,0 +1,37 @@
+.news-grid { align-items:stretch;grid-auto-rows:410px; }
+.digest-card.news-card { height:410px;min-height:0;padding:22px;overflow:hidden;display:flex;flex-direction:column; }
+.news-card .news-card-main { display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;flex:1;min-height:0;width:100%;padding:0;border:0;border-radius:4px;background:transparent;box-shadow:none;color:var(--text);text-align:left;cursor:pointer; }
+.news-card-main:focus-visible { outline:2px solid var(--accent);outline-offset:6px; }
+.news-card .card-kicker { display:flex;justify-content:space-between;min-height:18px; }
+.news-card-title { display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;height:72px;flex-shrink:0;margin:14px 0 9px;font-size:17px;line-height:24px;font-weight:600;letter-spacing:-.01em; }
+.news-card-meta { display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:11px;line-height:20px;flex-shrink:0; }
+.news-card-summary { display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;margin-top:16px;font-size:13px;font-weight:400;line-height:22px;overflow-wrap:anywhere; }
+.news-card-more { display:flex;align-items:center;gap:7px;margin-top:auto;padding-top:12px;color:var(--accent-ink);font-size:12px; }
+.news-card footer { flex-shrink:0;min-height:45px; }
+.news-card footer { display:flex;align-items:center;justify-content:space-between;gap:12px; }
+.news-card footer .news-star { margin-left:auto;background:transparent!important;box-shadow:none!important;border:0!important;color:var(--muted)!important;padding:7px; }
+.news-card footer .news-star[aria-pressed="true"] { color:var(--star-on,#e0a72c)!important; }
+.news-reader { width:min(820px,calc(100vw - 48px));max-height:86vh;margin:auto;padding:0;border:1px solid var(--glass-border,var(--line));border-radius:24px;background:rgb(from var(--glass-menu,var(--panel)) r g b / 1);color:var(--text);box-shadow:var(--float-shadow,var(--shadow));backdrop-filter:blur(28px);overflow:auto;scrollbar-gutter:stable;outline:none; }
+.news-reader::backdrop { background:#161c2b66;backdrop-filter:blur(7px); }
+.news-reader>header { display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:0;z-index:1;padding:16px 26px 12px;background:rgb(from var(--glass-menu,var(--panel)) r g b / 1);backdrop-filter:blur(28px); }
+.news-reader>header .section-label { font-size:10px;letter-spacing:.14em;color:var(--muted); }.news-reader>header .section-label span { margin:0 9px;opacity:.4; }
+.news-reader>header .research-icon-action { width:32px;height:32px;border:0;background:transparent;box-shadow:none; }
+.news-reader-content { padding:12px 52px 40px;line-height:1.95;font-size:15px;overflow-wrap:anywhere; }
+.news-reader h2 { font-size:clamp(22px,2.2vw,28px);line-height:1.5;letter-spacing:-.025em;font-weight:650;margin:18px 0 28px;overflow-wrap:anywhere;text-wrap:pretty; }
+.news-reader-meta { display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;font-size:11px;line-height:1.7;color:var(--muted); }.news-reader-meta>span:first-child { color:var(--accent-ink); }.news-reader-meta time { margin-left:auto;font-variant-numeric:tabular-nums; }
+.news-reader-content p { white-space:pre-wrap;margin:0 0 28px;line-height:2.05; }.news-reader-content h3 { display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;margin:30px 0 12px; }.news-reader-content h3:before { content:'';width:3px;height:12px;background:var(--accent);border-radius:3px; }
+.news-reader-content footer { display:flex;gap:20px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:20px;margin-top:32px; }.news-reader-content footer>div { display:grid;gap:5px;min-width:0;font-size:12px;color:var(--muted); }.news-reader-content footer small { font-size:10px;opacity:.75; }.news-reader-content footer .research-action-wrap { flex-shrink:0; }
+@media(max-width:600px) { .news-reader { width:calc(100vw - 24px);border-radius:18px;max-height:90vh; }.news-reader>header { padding:12px 16px; }.news-reader-content { padding:10px 24px 28px; }.news-reader h2 { font-size:22px;margin-bottom:22px; }.news-reader-meta time { margin-left:0; } }
+
+.news-reader[tabindex]:focus-visible { outline:none; }
+
+/* 收藏星标：星星本体由 star-pop.ts 的弹簧关键帧驱动缩放，散点层按 8 个方向推开后淡出。 */
+.news-star { position:relative;color:var(--star-on,#e0a72c); }
+.news-star>svg { transform-box:fill-box;transform-origin:center;will-change:transform; }
+/* 已收藏是金色，未收藏回到正文的灰；散点跟着金色走，否则金星周围会喷一圈灰点。 */
+.news-star:not([aria-pressed="true"]) { color:var(--muted); }
+.news-star[aria-pressed="true"] { color:var(--star-on,#e0a72c)!important; }
+.news-star-sparks { position:absolute;inset:0;display:block;pointer-events:none; }
+.news-star-sparks i { position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:var(--star-on,#e0a72c);opacity:0;animation:news-star-spark 560ms cubic-bezier(.18,.72,.3,1) forwards; }
+@keyframes news-star-spark { 0% { transform:rotate(var(--spark-angle)) translateY(8px) scale(.75);opacity:1; } 55% { opacity:.9; } 100% { transform:rotate(var(--spark-angle)) translateY(var(--spark-radius,15px)) scale(.25);opacity:0; } }
+@media(prefers-reduced-motion:reduce) { .news-star-sparks { display:none; } }

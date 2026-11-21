@@ -1,0 +1,532 @@
+/* Daily itinerary + dated to-do list.
+   Flat theme colours only: every surface uses the active chat theme's --pw-* tokens. */
+
+.planning-workspace .planning-day-schedule { margin: 28px 0 8px; padding: 22px 24px 20px; background: var(--pw-card); border: 1px solid var(--pw-line); border-radius: 20px; box-shadow: var(--pw-shadow); }
+.planning-workspace .planning-day-schedule .planning-card-head { align-items: baseline; gap: 12px; }
+.planning-workspace .planning-day-schedule h2 { font-size: 22px; font-weight: 560; letter-spacing: -.03em; }
+.planning-workspace .planning-schedule-reset {
+  display: inline-flex; align-items: center; gap: 4px; flex: none;
+  padding: 5px 9px; border: 1px solid var(--pw-line); border-radius: 999px;
+  background: transparent; color: var(--pw-a-ink); font-size: 10px; box-shadow: none;
+}
+.planning-workspace .planning-schedule-reset:disabled { opacity: .45; }
+.planning-workspace .planning-schedule-summary {
+  display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0 14px;
+}
+.planning-workspace .planning-schedule-summary span {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 0; border-radius: 0; background: transparent; color: var(--pw-muted); font-size: 12px;
+}
+.planning-workspace .planning-schedule-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;
+}
+.planning-workspace .planning-schedule-column { min-width: 0; }
+.planning-workspace .planning-schedule-part {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 6px;
+  padding: 0 2px 8px; margin-bottom: 8px; border-bottom: 1px solid var(--pw-line);
+}
+.planning-workspace .planning-schedule-part strong { font-size: 14px; font-weight: 560; color: var(--pw-ink); }
+.planning-workspace .planning-schedule-part span { font-size: 12px; color: var(--pw-muted); font-variant-numeric: tabular-nums; }
+.planning-workspace .planning-schedule-list { display: grid; gap: 5px; align-content: start; }
+.planning-workspace .planning-schedule-row {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr) 74px; align-items: center; gap: 8px;
+  padding: 8px 2px; border: 0; border-radius: 0; border-bottom: 1px solid var(--pw-line);
+  background: var(--pw-card-soft); min-width: 0;
+}
+.planning-workspace .planning-schedule-row.tone-a { border-left: 3px solid var(--pw-a-ink); }
+.planning-workspace .planning-schedule-row.tone-b { border-left: 3px solid var(--pw-b-ink); }
+.planning-workspace .planning-schedule-row.tone-c { border-left: 3px solid var(--pw-c-ink); }
+.planning-workspace .planning-schedule-row.plan { background: var(--pw-a-soft); }
+.planning-workspace .planning-schedule-row.todo,
+.planning-workspace .planning-schedule-row.task { background: var(--pw-b-soft); }
+.planning-workspace .planning-schedule-row.meal { background: var(--pw-c-soft); }
+.planning-workspace .planning-schedule-row.free { border: 1px dashed var(--pw-line); background: transparent; padding: 3px 8px; }
+.planning-workspace .planning-schedule-row.conflict { border-color: var(--pw-pill); }
+.planning-workspace .planning-schedule-time {
+  font-size: 12px; font-variant-numeric: tabular-nums; color: var(--pw-muted); white-space: nowrap;
+}
+.planning-workspace .planning-schedule-body { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.planning-workspace .planning-schedule-body strong {
+  flex: 1 1 auto; min-width: 0; font-size: 13px; font-weight: 560; color: var(--pw-ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.planning-workspace .planning-schedule-body small { flex: 0 0 auto; font-size: 9px; color: var(--pw-faint); white-space: nowrap; }
+.planning-workspace .planning-schedule-row.free .planning-schedule-body strong { font-weight: 400; color: var(--pw-faint); }
+.planning-workspace .planning-schedule-row.free .planning-schedule-body small { display: none; }
+.planning-workspace .planning-schedule-start {
+  width: 74px; min-width: 0; padding: 3px 2px; border: 1px solid var(--pw-line); border-radius: 7px;
+  background: var(--pw-card); color: var(--pw-ink); font-size: 10px; font-variant-numeric: tabular-nums;
+}
+.planning-workspace .planning-schedule-idle { margin: 0; font-size: 10px; color: var(--pw-faint); }
+.planning-workspace .planning-schedule-overflow {
+  margin: 12px 0 0; padding: 8px 9px; border-radius: 9px;
+  background: var(--pw-c-soft); color: var(--pw-ink); font-size: 10px; line-height: 1.7;
+}
+@container planning-desk (max-width: 1000px) {
+  .planning-workspace .planning-schedule-grid { grid-template-columns: 1fr 1fr; }
+  .planning-workspace .planning-schedule-body small { display: none; }
+}
+@container planning-desk (max-width: 700px) {
+  .planning-workspace .planning-schedule-grid { grid-template-columns: 1fr; }
+  .planning-workspace .planning-day-schedule { padding: 18px 14px; }
+}
+
+/* Companion cards: one paper, one theme tint. The theme colour (--pw-a) paints the rows. */
+.planning-workspace .planning-companion .planning-card,
+.planning-workspace .planning-calendar {
+  background: var(--pw-card);
+  border-color: color-mix(in srgb, var(--pw-a) 34%, var(--pw-line));
+  box-shadow: none;
+}
+.planning-workspace .planning-companion .planning-card-head {
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.planning-workspace .planning-companion .planning-card-head h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 560;
+  letter-spacing: -.02em;
+}
+.planning-workspace .planning-companion .planning-card-head .planning-muted,
+.planning-workspace .planning-todo-count {
+  margin: 0 0 0 auto;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--pw-muted);
+}
+.planning-workspace .planning-companion .planning-icon,
+.planning-workspace .planning-quiet-add {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--pw-a) 55%, var(--pw-card));
+  color: var(--pw-ink);
+  box-shadow: none;
+}
+.planning-workspace .planning-quiet-add {
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+.planning-workspace .planning-companion-col>.planning-week-pulse { flex: 0 0 auto; }
+.planning-workspace .planning-week-pulse .planning-card-head { margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--pw-line-soft); }
+.planning-workspace .planning-companion-col>.planning-checklist { flex: 1 1 auto; min-height: 0; }
+
+.planning-workspace .planning-todo,
+.planning-workspace .planning-checklist-item,
+.planning-workspace .planning-task-row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--pw-a) var(--pw-item-mix), var(--pw-card));
+  box-shadow: none;
+}
+/* 待办条照「当天安排」的样子做：实心主色块、大一点的圆圈、标题下面一行元信息。
+   清单条也用主色——它现在就是日程里的那种条，不再靠第三色区分。 */
+.planning-workspace .planning-checklist-item {
+  position: relative;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--pw-a) var(--pw-item-mix), var(--pw-card));
+}
+.planning-workspace .planning-task-row {
+  background: color-mix(in srgb, var(--pw-c) var(--pw-item-mix), var(--pw-card));
+}
+.planning-workspace .planning-todo.done,
+.planning-workspace .planning-checklist-item.done,
+.planning-workspace .planning-task-row.done {
+  background: color-mix(in srgb, var(--pw-ink) 7%, var(--pw-card));
+}
+.planning-workspace .planning-check,
+.planning-workspace .planning-checklist-check,
+.planning-workspace .planning-task-check {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  padding: 0;
+  border: 1.5px solid color-mix(in srgb, var(--pw-a) 18%, var(--pw-ink));
+  border-radius: 50%;
+  background: transparent;
+  color: var(--pw-card);
+  box-shadow: none;
+}
+.planning-workspace .planning-checklist-check {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border-color: color-mix(in srgb, var(--pw-a) 34%, var(--pw-ink));
+}
+.planning-workspace .planning-todo.done .planning-check,
+.planning-workspace .planning-checklist-item.done .planning-checklist-check,
+.planning-workspace .planning-task-row.done .planning-task-check {
+  background: color-mix(in srgb, var(--pw-ink) 42%, var(--pw-card));
+  border-color: transparent;
+}
+.planning-workspace .planning-todo-content,
+.planning-workspace .planning-checklist-body,
+.planning-workspace .planning-task-open {
+  display: flex;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  box-shadow: none;
+}
+.planning-workspace .planning-todo-content,
+.planning-workspace .planning-checklist-body { flex-direction: column; align-items: flex-start; gap: 0; }
+.planning-workspace .planning-task-open { flex-direction: row; align-items: center; gap: 8px; }
+.planning-workspace .planning-task-open>span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.planning-workspace .planning-todo-content strong,
+.planning-workspace .planning-checklist-title,
+.planning-workspace .planning-task-open strong {
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1.2;
+  color: var(--pw-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.planning-workspace .planning-todo.done .planning-todo-content strong,
+.planning-workspace .planning-checklist-item.done .planning-checklist-title,
+.planning-workspace .planning-task-row.done .planning-task-open strong {
+  color: var(--pw-faint);
+  text-decoration: line-through;
+}
+.planning-workspace .planning-todo-content span,
+.planning-workspace .planning-checklist-meta,
+.planning-workspace .planning-task-open small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--pw-ink) 42%, var(--pw-a));
+}
+.planning-workspace .planning-checklist-meta .planning-todo-date { height: 16px; line-height: 16px; }
+/* 删除按钮浮在右上角，不再单独占一列：这条卡片只有一百多像素可用，
+   宽度让给标题和时长。 */
+.planning-workspace .planning-checklist-remove { position: absolute; top: 7px; right: 5px; }
+.planning-workspace .planning-checklist-item .planning-checklist-body { padding-right: 16px; }
+.planning-workspace .planning-todo .planning-edit,
+.planning-workspace .planning-checklist-remove {
+  opacity: 0;
+  width: 22px;
+  height: 22px;
+  min-height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--pw-muted);
+  box-shadow: none;
+}
+.planning-workspace .planning-todo:hover .planning-edit,
+.planning-workspace .planning-todo .planning-edit:focus-visible,
+.planning-workspace .planning-checklist-item:hover .planning-checklist-remove,
+.planning-workspace .planning-checklist-remove:focus-visible { opacity: 1; }
+.planning-workspace .planning-empty,
+.planning-workspace .planning-task-empty,
+.planning-workspace .planning-checklist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0;
+  color: var(--pw-faint);
+  font-size: 12px;
+  text-align: center;
+}
+.planning-workspace .planning-empty p,
+.planning-workspace .planning-task-empty p,
+.planning-workspace .planning-checklist-empty { margin: 0; }
+
+.planning-workspace .planning-todo-view { display: inline-flex; gap: 2px; flex: none; }
+.planning-workspace .planning-todo-view button {
+  min-height: 24px;
+  padding: 2px 8px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pw-muted);
+  font-size: 11px;
+  box-shadow: none;
+}
+.planning-workspace .planning-todo-view button.active {
+  background: color-mix(in srgb, var(--pw-a) 55%, var(--pw-card));
+  color: var(--pw-ink);
+}
+.planning-workspace .planning-todo-add { display: grid; gap: 6px; margin-bottom: 12px; }
+.planning-workspace .planning-todo-add .planning-todo-title,
+.planning-workspace .planning-todo-add-row input,
+.planning-workspace .planning-todo-add-row select {
+  border: 0;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--pw-a) 16%, var(--pw-card));
+  color: var(--pw-ink);
+  font-size: 12px;
+  box-shadow: none;
+}
+.planning-workspace .planning-todo-add .planning-todo-title { height: 34px; padding: 0 12px; }
+/* 加号跟着标题输入框走：这一行只有「可收缩的输入框 + 固定宽度的按钮」，
+   窄卡里也不会被挤到下一行。日期与时长另起一行，各占一半。 */
+.planning-workspace .planning-todo-add-title { display: flex; align-items: center; gap: 6px; }
+.planning-workspace .planning-todo-add-title .planning-todo-title { flex: 1 1 0; width: auto; min-width: 0; }
+.planning-workspace .planning-todo-add-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px; }
+.planning-workspace .planning-todo-add-row input[type="date"] { min-width: 0; height: 32px; padding: 0 10px; }
+/* 时长下拉不参与收缩：一旦被压窄，「30 分钟」会断成三行。 */
+.planning-workspace .planning-todo-add-row select { height: 32px; padding: 0 8px; white-space: nowrap; }
+.planning-workspace .planning-todo-add-button {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--pw-accent);
+  color: var(--pw-pill-text);
+  box-shadow: none;
+}
+.planning-workspace .planning-checklist-body { min-width: 0; }
+.planning-workspace .planning-checklist-item .planning-checklist-title { font-size: 13.5px; line-height: 1.35; }
+.planning-workspace .planning-checklist-item .planning-checklist-meta { font-size: 11.5px; gap: 5px; }
+.planning-workspace .planning-checklist-dot { width: 2px; height: 2px; border-radius: 50%; background: currentColor; opacity: .55; }
+/* 副标题只放「45 分钟」这种短信息，绝不允许逐字换行 —— 窄卡里「分钟」被拆到第二行会很难看。 */
+.planning-workspace .planning-checklist-meta em { font-style: normal; white-space: nowrap; }
+.planning-workspace .planning-todo-date {
+  width: auto;
+  max-width: 7.4em;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 11.5px;
+  line-height: inherit;
+  box-shadow: none;
+}
+/* 原生日期控件自带的日历按钮会把「6 分钟 · 2026/11/17」撑开成两段，
+   这里只留文字，改日期仍然可以直接点、直接键入。 */
+.planning-workspace .planning-todo-date::-webkit-calendar-picker-indicator { display: none; }
+.planning-workspace .planning-task-group { margin: 0; padding: 0; background: transparent; }
+.planning-workspace .planning-task-row.child { margin-left: 16px; }
+.planning-workspace .planning-task-add-child {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin: 0 0 8px 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--pw-muted);
+  box-shadow: none;
+}
+.planning-workspace .planning-task-edit { opacity: 0; }
+
+/* 单列排布时给待办卡一个下限，卡片不会缩成一小条。 */
+@container planning-desk (max-width:900px) {
+  .planning-workspace .planning-checklist { min-height: 380px; }
+}
+
+/* 待办列表把剩余高度分给空态，卡片被拉高时提示文字落在中间，不会吊在顶上。 */
+.planning-workspace .planning-checklist-items { display: flex; flex-direction: column; }
+.planning-workspace .planning-checklist-items > .planning-checklist-empty { margin: auto 0; }
+
+/* ── 番茄钟 ────────────────────────────────────────────────────────
+   表盘（浅底盘 + 进度弧 + 弧末圆点）/ 分段式预设 / 一整颗时长控件。
+   高度仍由右栏的 flex 分配，所以换版式不会让卡片变高变矮。 */
+.planning-workspace .planning-companion-col>.planning-focus { flex:1 1 auto; min-height:0; height:auto; overflow:hidden; }
+.planning-workspace .planning-focus { display:flex; flex-direction:column; padding:20px 18px; background:var(--pw-a-soft); }
+.planning-workspace .planning-focus .planning-card-head { margin-bottom:0; padding-bottom:0; border-bottom:0; align-items:center; }
+.planning-workspace .planning-focus-heading { display:flex; flex-direction:column; gap:1px; }
+/* 预设做成带轨道的分段控件：裸文字看着像说明，不像能点的。 */
+.planning-workspace .planning-focus-presets {
+  display:inline-flex; gap:2px; margin-left:auto; padding:2px; border-radius:999px;
+  background:color-mix(in srgb,var(--pw-ink) 6%,var(--pw-card));
+}
+.planning-workspace .planning-focus-presets button {
+  min-height:22px; padding:0 8px; border:0; border-radius:999px; background:transparent;
+  color:var(--pw-muted); font-size:11px; font-variant-numeric:tabular-nums; box-shadow:none;
+  transition:color .16s var(--ease), background .16s var(--ease);
+}
+.planning-workspace .planning-focus-presets button:hover:not(:disabled) { color:var(--pw-ink); }
+.planning-workspace .planning-focus-presets button.active {
+  background:var(--pw-card); color:var(--pw-a-ink);
+  /* 暗色下卡片色比轨道更暗，靠一圈细线把选中项描出来。 */
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pw-line) 70%,transparent),0 1px 2px color-mix(in srgb,var(--pw-ink) 12%,transparent);
+}
+.planning-workspace .planning-focus-presets button:disabled { opacity:.45; }
+.planning-workspace .planning-focus-body { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; }
+.planning-workspace .planning-focus-ring { position:relative; display:grid; place-items:center; width:min(200px,100%); aspect-ratio:1; }
+.planning-workspace .planning-focus-ring svg { position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); overflow:visible; }
+.planning-workspace .planning-focus-face { fill:color-mix(in srgb,var(--pw-a) 12%,var(--pw-card)); }
+.planning-workspace .planning-focus-track { fill:none; stroke:color-mix(in srgb,var(--pw-a) 34%,var(--pw-card)); stroke-width:7; }
+.planning-workspace .planning-focus-arc { fill:none; stroke:var(--pw-accent); stroke-width:7; stroke-linecap:round; transition:stroke-dashoffset .3s linear; }
+/* 圆点描边用卡片底色，等于在进度弧头上打了个「孔」，比纯色点干净。 */
+.planning-workspace .planning-focus-dot {
+  fill:var(--pw-accent); stroke:var(--pw-a-soft); stroke-width:3;
+  transform-box:view-box; transform-origin:60px 60px;
+  transform:rotate(calc(var(--focus-progress,0) * 360deg));
+  transition:transform .3s linear, opacity .2s var(--ease);
+}
+/* 绝对定位的 svg 会盖住静态文字，时间必须先定位才能排在表盘上面。 */
+.planning-workspace .planning-focus-clock { position:relative; display:flex; flex-direction:column; align-items:center; gap:5px; }
+.planning-workspace .planning-focus-clock strong { font-family:var(--font-sans); font-size:36px; font-weight:500; letter-spacing:-.045em; font-variant-numeric:tabular-nums; line-height:1; color:var(--pw-ink); }
+/* 两位小时（10:00:00 起）是 8 个字符，36px 会顶到圆环描边上，缩小一档。 */
+.planning-workspace .planning-focus-clock strong.is-long { font-size:28px; letter-spacing:-.05em; }
+.planning-workspace .planning-focus-clock span { font-size:10px; letter-spacing:.14em; color:var(--pw-muted); }
+.planning-workspace .planning-focus-note { margin:0; font-size:10px; color:var(--pw-muted); text-align:center; }
+/* 自定义时长：小时 0–24、分钟 0–60。外壳是一整颗胶囊，两枚下拉透明地嵌在里面。
+   下拉必须显式给高度和 min-height:0 —— design.css 给所有 select 压了 34px。 */
+.planning-workspace .planning-focus-duration {
+  display:inline-flex; align-items:center; gap:2px; padding:3px; border:1px solid var(--pw-line);
+  border-radius:999px; background:var(--pw-card); font-size:10px; color:var(--pw-muted);
+}
+.planning-workspace .planning-focus-duration select {
+  width:42px; height:26px; min-height:0; padding:0 4px; gap:2px; border:0; border-radius:999px;
+  background:transparent; color:var(--pw-ink);
+  font-size:12px; font-weight:500; font-variant-numeric:tabular-nums; box-shadow:none;
+  transition:background .16s var(--ease);
+}
+.planning-workspace .planning-focus-duration select:hover:not(:disabled) { background:color-mix(in srgb,var(--pw-a) 26%,var(--pw-card)); }
+.planning-workspace .planning-focus-duration select:disabled { opacity:1; color:var(--pw-muted); background:transparent; }
+.planning-workspace .planning-focus-actions { display:flex; align-items:center; gap:8px; width:min(190px,100%); }
+.planning-workspace .planning-focus-start {
+  flex:1 1 auto; display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  min-height:38px; padding:0 16px; border:0; border-radius:999px;
+  background:var(--pw-pill); color:var(--pw-pill-text); font-size:12px; font-weight:500; letter-spacing:.02em; box-shadow:none;
+  transition:opacity .16s var(--ease);
+}
+.planning-workspace .planning-focus-start:hover:not(:disabled) { opacity:.9; }
+.planning-workspace .planning-focus-start:disabled { opacity:.4; }
+.planning-workspace .planning-focus-reset {
+  flex:0 0 auto; display:grid; place-items:center; width:38px; height:38px; min-height:38px; padding:0;
+  border:1px solid var(--pw-line); border-radius:50%; background:var(--pw-card); color:var(--pw-muted); box-shadow:none;
+  transition:color .16s var(--ease), border-color .16s var(--ease);
+}
+.planning-workspace .planning-focus-reset:hover { color:var(--pw-ink); border-color:color-mix(in srgb,var(--pw-line) 55%,var(--pw-ink)); }
+/* 卡片底部一行小字，把计时器下面那块空填住，也顺带交代今天跑了多少。 */
+.planning-workspace .planning-focus-today {
+  margin:0; padding-top:9px; border-top:1px solid var(--pw-line-soft); width:100%;
+  text-align:center; font-size:10px; letter-spacing:.02em; color:var(--pw-muted);
+}
+.planning-workspace .planning-focus-today b { font-weight:600; color:var(--pw-a-ink); font-variant-numeric:tabular-nums; }
+
+/* 时长下拉的浮层：跟计划页一套颜色，不再是系统白底 + 主题橙高亮。 */
+@supports (appearance: base-select) {
+  /* 箭头收小一档、常态半透明：不然「1 ⋄ 时」中间的菱形太抢眼，下拉的暗示留到 hover。 */
+  .planning-workspace .planning-focus-duration select::picker-icon { width:8px; height:8px; color:var(--pw-faint); opacity:.6; transition:opacity .16s var(--ease), color .16s var(--ease); }
+  .planning-workspace .planning-focus-duration select:hover:not(:disabled)::picker-icon { opacity:1; color:var(--pw-muted); }
+  .planning-workspace .planning-focus-duration select:open::picker-icon { rotate:none; color:var(--pw-muted); }
+  .planning-workspace .planning-focus-duration select::picker(select) {
+    margin-block:7px; padding:5px; min-width:92px;
+    border:1px solid var(--pw-line); border-radius:14px;
+    background:var(--pw-card); color:var(--pw-ink);
+    box-shadow:0 12px 30px color-mix(in srgb,var(--pw-ink) 18%,transparent);
+    max-height:min(232px,44vh); overflow:auto; overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:color-mix(in srgb,var(--pw-ink) 22%,transparent) transparent;
+  }
+  .planning-workspace .planning-focus-duration select::picker(select)::-webkit-scrollbar { width:6px; }
+  .planning-workspace .planning-focus-duration select::picker(select)::-webkit-scrollbar-thumb {
+    border-radius:999px; background:color-mix(in srgb,var(--pw-ink) 20%,transparent);
+  }
+  .planning-workspace .planning-focus-duration option {
+    min-height:26px; padding:4px 8px; gap:0; border-radius:9px;
+    justify-content:center; font-size:12px; font-variant-numeric:tabular-nums; color:var(--pw-ink);
+  }
+  /* 打开时把控制本身也点亮，跟浮层连成一体。 */
+  .planning-workspace .planning-focus-duration select:open { background:color-mix(in srgb,var(--pw-a) 26%,var(--pw-card)); }
+  .planning-workspace .planning-focus-duration option::checkmark { display:none; }
+  .planning-workspace .planning-focus-duration option:hover,
+  .planning-workspace .planning-focus-duration option:focus-visible {
+    background:color-mix(in srgb,var(--pw-a) 34%,var(--pw-card)); color:var(--pw-ink);
+  }
+  .planning-workspace .planning-focus-duration option:checked {
+    background:color-mix(in srgb,var(--pw-a) 30%,var(--pw-card)); color:var(--pw-a-ink); font-weight:600;
+  }
+  .planning-workspace .planning-focus-duration option:checked:hover,
+  .planning-workspace .planning-focus-duration option:checked:focus-visible {
+    background:color-mix(in srgb,var(--pw-a) 44%,var(--pw-card)); color:var(--pw-a-ink);
+  }
+}
+
+/* ── 年度热力图：照分享卡片的版式重排 ──────────────────────────────
+   大标题 + 一句短说明 / 右上日期 / 四个大数字 / 一整片圆角方格 / 底部图例。
+   热力色不跟 accent 走：accent 是主色压暗出来的灰调，热力图需要同级明度下
+   更饱和的一档，所以每套主题单独给 --pw-heat，再按比例混进卡片色得到四档。 */
+.planning-workspace {
+  --pw-heat-lift:var(--pw-heat);
+  --pw-heat-0:color-mix(in srgb,var(--pw-ink) 12%,var(--pw-card));
+  --pw-heat-1:color-mix(in oklab,var(--pw-heat-lift) 15%,var(--pw-card));
+  --pw-heat-2:color-mix(in oklab,var(--pw-heat-lift) 34%,var(--pw-card));
+  --pw-heat-3:color-mix(in oklab,var(--pw-heat-lift) 58%,var(--pw-card));
+  --pw-heat-4:var(--pw-heat-lift);
+}
+.planning-workspace .planning-activity { padding:30px 32px 20px; border-radius:26px; background:var(--pw-card); }
+.planning-workspace .planning-activity-head { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; }
+.planning-workspace .planning-activity-title { margin:0; color:var(--pw-ink); font-size:34px; font-weight:600; line-height:1.02; letter-spacing:-.045em; }
+.planning-workspace .planning-activity-tagline { margin:8px 0 0; color:var(--pw-accent); font-size:12px; line-height:1.4; }
+.planning-workspace .planning-activity-date { flex:none; padding-top:5px; color:var(--pw-muted); font-size:11.5px; }
+/* 四列等分：参考卡片里四个数字是横向均匀铺开的，挤在左边会显得头重脚轻。 */
+.planning-workspace .planning-activity-stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px 16px; margin:24px 0 22px; }
+.planning-workspace .planning-activity-stats>div { display:flex; flex-direction:column; gap:3px; }
+.planning-workspace .planning-activity-stats strong { display:flex; align-items:baseline; gap:3px; color:var(--pw-ink); font-size:33px; font-weight:600; line-height:1.05; letter-spacing:-.045em; font-variant-numeric:tabular-nums; }
+.planning-workspace .planning-activity-stats em { color:var(--pw-muted); font-size:13px; font-style:normal; font-weight:500; letter-spacing:0; }
+.planning-workspace .planning-activity-stats>div>span { color:var(--pw-muted); font-size:11px; }
+/* 格子按列排（每列一周），宽高由列宽推出来，整片永远铺满卡片、方格保持正方。 */
+.planning-workspace .planning-heat-scroll { width:100%; padding:0; border:0; border-radius:0; background:transparent; overflow-x:auto; }
+.planning-workspace .planning-heat-months { display:grid; grid-template-columns:repeat(53,minmax(0,1fr)); gap:3px; width:100%; min-width:660px; margin:0 0 6px; }
+.planning-workspace .planning-heat-months>span { color:var(--pw-faint); font-size:8.5px; line-height:1; white-space:nowrap; }
+.planning-workspace .planning-heatmap { display:grid; grid-template-columns:repeat(53,minmax(0,1fr)); grid-template-rows:repeat(7,auto); grid-auto-flow:column; grid-auto-columns:auto; gap:3px; width:100%; min-width:660px; }
+.planning-workspace .planning-heatmap button { width:100%; height:auto; min-height:0; aspect-ratio:1; padding:0; border:0; border-radius:5px; background:var(--pw-heat-0); box-shadow:none; }
+.planning-workspace .planning-heatmap button[data-level="1"] { background:var(--pw-heat-1); }
+.planning-workspace .planning-heatmap button[data-level="2"] { background:var(--pw-heat-2); }
+.planning-workspace .planning-heatmap button[data-level="3"] { background:var(--pw-heat-3); }
+.planning-workspace .planning-heatmap button[data-level="4"] { background:var(--pw-heat-4); }
+/* 选中环画在格子内侧：最右一列贴着滚动容器边缘，向外偏移会被裁掉半个圈。 */
+.planning-workspace .planning-heatmap button.selected { outline:2px solid var(--pw-ink); outline-offset:-1px; }
+.planning-workspace .planning-heatmap button:disabled { opacity:1; }
+.planning-workspace .planning-activity footer { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px; color:var(--pw-faint); font-size:10.5px; }
+.planning-workspace .planning-heat-key { display:flex; align-items:center; gap:4px; }
+.planning-workspace .planning-heat-key i { width:11px; height:11px; min-height:0; padding:0; border:0; border-radius:3px; background:var(--pw-heat-0); }
+.planning-workspace .planning-heat-key i[data-level="1"] { background:var(--pw-heat-1); }
+.planning-workspace .planning-heat-key i[data-level="2"] { background:var(--pw-heat-2); }
+.planning-workspace .planning-heat-key i[data-level="3"] { background:var(--pw-heat-3); }
+.planning-workspace .planning-heat-key i[data-level="4"] { background:var(--pw-heat-4); }
+@container planning-desk (max-width:760px) {
+  .planning-workspace .planning-activity { padding:20px 16px 16px; }
+  .planning-workspace .planning-activity-title { font-size:26px; }
+  .planning-workspace .planning-activity-stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 12px; margin:16px 0 16px; }
+  .planning-workspace .planning-activity-stats strong { font-size:23px; }
+}

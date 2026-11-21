@@ -1,0 +1,96 @@
+.writing-studio { height:100%;min-height:0;display:flex;flex-direction:column; }
+.writing-studio-modes { display:flex;align-items:center;gap:6px;padding:15px 24px;border-bottom:1px solid var(--line);flex-shrink:0; }
+.writing-studio-back { margin-right:4px; }
+.writing-studio-modes>span { margin-right:auto;font-weight:600;font-size:14px;color:var(--text); }
+.writing-studio-modes button { display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:0;box-shadow:none;background:transparent;color:var(--muted);font-size:12px; }
+.writing-studio-modes button[aria-selected=true] { background:var(--glass-card,var(--panel));color:var(--accent-ink); }
+.writing-studio-view { flex:1;min-height:0;overflow:auto; }
+.writing-studio-view[hidden] { display:none; }
+.latex-workspace { --latex-command:#327b63;--latex-atom:#7761aa;--latex-string:#986c3c;height:100%;min-height:500px;display:flex;flex-direction:column;color:var(--text);position:relative;overflow:hidden; }
+:root[data-theme=dark] .latex-workspace { --latex-command:#86cbb4;--latex-atom:#c5b5ef;--latex-string:#e1bb8e; }
+.latex-workspace button { display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer; }
+.latex-workspace button:disabled { opacity:.4;cursor:default; }
+.latex-workspace :is(button,input,select):focus-visible { outline:2px solid var(--accent);outline-offset:2px; }
+.latex-workspace select,.latex-workspace input { min-width:0;font:inherit;color:var(--text);background:var(--glass-card,var(--panel));border:1px solid var(--line);border-radius:9px;padding:7px 10px; }
+/* 顶部只有一条工具条：项目、当前文件、主文件/引擎/自动编译，右边是操作与编译。
+   原来是「项目栏 + 文档栏」两条（约 110px），合并后约 46px，省下的高度全给编辑区和 PDF。 */
+.latex-project-bar { display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;row-gap:7px;padding:7px 14px;flex-shrink:0; }
+.latex-bar-main { display:flex;align-items:center;gap:6px;min-width:0;flex:1 1 auto; }
+.latex-bar-main>svg { color:var(--accent-ink);flex:none; }
+.latex-project-bar select { padding:4px 7px;font-size:11px;border-radius:8px; }
+.latex-project-bar .latex-project-select { width:clamp(90px,14vw,180px);font-size:13px;font-weight:550;border:0;background:transparent;padding:5px 6px; }
+.latex-project-bar .latex-main-file { display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:11px;color:var(--muted);flex:none; }
+.latex-project-bar .latex-main-file select { width:130px;font-size:11px; }
+.latex-project-bar .latex-engine-select { width:104px;flex:none;font-size:11px; }
+.latex-bar-file { display:flex;align-items:center;gap:5px;min-width:0;color:var(--muted);font-size:11px; }
+.latex-bar-file>button { flex:none;padding:4px;border:0;background:transparent;box-shadow:none;color:var(--muted); }
+.latex-bar-file>span { overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:170px; }
+.latex-bar-file small { font-size:10px;color:var(--muted);white-space:nowrap; }
+.latex-project-bar .latex-auto { display:flex;align-items:center;gap:6px;flex:none;font-size:11px;color:var(--muted);white-space:nowrap; }
+.latex-actions { display:flex;align-items:center;gap:4px;margin-left:auto;flex:none; }
+.latex-actions>button { width:30px;height:30px;padding:0;border:0;box-shadow:none;background:transparent;color:var(--muted);border-radius:8px; }
+.latex-actions>button:hover:not(:disabled),.latex-pane-toolbar button:hover { color:var(--accent-ink);background:var(--control-hover); }
+.latex-actions>button.latex-compile { width:auto;min-width:76px;height:30px;padding:0 12px;background:var(--accent);color:white;border-radius:9px;font-size:12px; }
+.latex-toolbar-divider { width:1px;height:18px;background:var(--line);margin:0 3px;flex:none; }
+/* 「自动编译」开关。上面那条 :is(button,input,select) 会把 checkbox 一起加上
+   padding 和 9px 圆角，把它从 16×16 撑成 22×16 的宽扁胶囊、对勾被挤到右下角。
+   这里单独复原成 18×18 的圆角方，图形用居中对勾：开启是白对勾，关闭是浅灰对勾，
+   一眼能看出这是个开关而不是普通勾选框。 */
+.latex-workspace .latex-auto input[type="checkbox"] {
+  flex: none; width: 18px; height: 18px; min-width: 18px; padding: 0;
+  border: 1px solid var(--line-strong); border-radius: 6px;
+  background: var(--glass-field); box-shadow: none;
+}
+.latex-workspace .latex-auto input[type="checkbox"]::after {
+  width: 15px; height: 15px; scale: 1; opacity: .52; background: var(--muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5.4 12.7 9.9 17.1 18.6 7.9' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: opacity 140ms var(--ease), scale 140ms var(--ease);
+}
+.latex-workspace .latex-auto input[type="checkbox"]:hover:not(:checked)::after { opacity: .72; }
+/* 上面那条把背景写死了，:checked 得显式再补一次，否则会盖掉 design.css 的红底。 */
+.latex-workspace .latex-auto input[type="checkbox"]:checked { background: var(--accent-fill); border-color: var(--accent-fill); }
+.latex-workspace .latex-auto input[type="checkbox"]:checked::after { scale: 1; opacity: 1; background: #fff; }
+.latex-layout { display:grid;grid-template-columns:185px minmax(0,1fr);flex:1;min-height:250px;border-bottom:1px solid var(--line); }
+.latex-layout.latex-tree-hidden { grid-template-columns:minmax(0,1fr); }
+.latex-files { min-width:0;overflow:auto;border-right:1px solid var(--line);padding:12px 7px; }
+.latex-file-tabs { display:flex;align-items:center;gap:2px;margin-bottom:12px; }
+.latex-file-tabs button { padding:6px 8px;font-size:11px;border:0;background:transparent;box-shadow:none;color:var(--muted); }
+.latex-file-tabs button[aria-pressed=true] { color:var(--accent-ink);background:var(--control-hover); }
+.latex-file-tabs button:nth-child(3) { margin-left:auto; }
+.latex-file-search { display:flex;align-items:center;gap:6px;padding:0 6px;color:var(--muted);margin:0 0 10px; }
+.latex-file-search input { width:100%;border:0;background:transparent;padding:5px;font-size:11px; }
+.latex-file-tree,.latex-outline { display:flex;flex-direction:column;gap:2px; }
+.latex-file-tree button,.latex-outline button { justify-content:flex-start;width:100%;border:0;box-shadow:none;background:transparent;font-size:11px;gap:7px;padding:8px;border-radius:7px;color:var(--muted);min-height:32px; }
+.latex-file-tree button>svg { flex-shrink:0; }.latex-file-tree button>span { white-space:nowrap;text-overflow:ellipsis;overflow:hidden; }
+.latex-file-tree button.selected { color:var(--accent-ink);background:var(--accent-soft,rgba(255,122,89,.1)); }
+.latex-file-tree button:hover,.latex-outline button:hover { background:var(--control-hover); }.latex-outline button { text-align:left;line-height:1.6; }
+.latex-outline p { font-size:11px;color:var(--muted);padding:12px; }
+.latex-edit-preview { display:grid;min-width:0;min-height:0; }
+.latex-source,.latex-preview { display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden; }
+.latex-pane-toolbar { display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;min-height:44px;padding:5px 9px;border-bottom:1px solid var(--line);flex-shrink:0;font-size:11px; }
+.latex-pane-toolbar>div { display:flex;align-items:center;gap:2px; }.latex-pane-toolbar>span { color:var(--muted);padding-left:7px; }
+.latex-pane-toolbar button { color:var(--muted);border:0;box-shadow:none;background:transparent;padding:5px;min-width:26px;min-height:28px;font-size:10px;border-radius:7px; }
+.latex-pane-toolbar input { width:38px;text-align:center;padding:4px 0;border:0;background:transparent;font-size:10px;appearance:textfield; }.latex-pane-toolbar input::-webkit-inner-spin-button { appearance:none; }
+.latex-pane-toolbar small { color:var(--muted);font-size:10px;white-space:nowrap; }
+.latex-code-editor { flex:1;min-height:0;overflow:hidden;background:var(--glass-card,rgba(255,255,255,.25)); }
+.latex-code-editor .cm-editor { height:100%; }.latex-code-editor .cm-search { padding:8px;display:flex;flex-wrap:wrap;gap:5px;font:11px/1.7 system-ui; }.latex-code-editor .cm-search input { max-width:140px;padding:3px 7px; }.latex-code-editor .cm-search button { padding:3px 6px;font-size:10px; }
+.latex-code-editor .cm-tooltip-autocomplete { font-size:12px;border-radius:9px;overflow:hidden; }.latex-code-editor .cm-tooltip-autocomplete ul { max-width:330px; }
+.latex-resizer { background:var(--line);cursor:col-resize;touch-action:none;position:relative; }.latex-resizer:hover,.latex-resizer:focus-visible { background:var(--accent); }
+.latex-pdf-scroll { flex:1;min-height:0;overflow:auto;padding:18px;display:flex;flex-direction:column;align-items:center;gap:20px;background:rgba(110,125,140,.04); }
+.latex-pdf-page { background:white;position:relative;flex-shrink:0;overflow:hidden;box-shadow:0 4px 24px rgba(26,37,49,.09); }.latex-pdf-page canvas { display:block; }.latex-pdf-page>div { position:absolute;inset:0; }.latex-sync-marker { position:absolute;border:2px solid var(--accent);border-radius:3px;background:rgba(255,122,89,.22);width:26px;height:18px;z-index:3;pointer-events:none; }
+.latex-preview-empty { display:flex;flex:1;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px;color:var(--muted);font-size:12px;line-height:1.8; }.latex-preview-empty svg { opacity:.35; }.latex-preview-empty h3 { font-size:14px;font-weight:500;margin:16px 0 2px; }
+.latex-build-status { display:flex;align-items:center;gap:2px;min-width:0; }
+.latex-log-close { width:22px;height:22px;padding:0;border-radius:7px;display:grid;place-items:center;color:var(--muted); }
+.latex-log-close:hover { color:var(--accent-ink);background:var(--control-hover); }
+.latex-build-bar { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:5px 14px;font-size:11px;flex-shrink:0; }.latex-build-bar button { padding:4px;border:0;background:transparent;box-shadow:none;color:var(--muted);font-size:11px; }.latex-build-bar small { color:var(--muted);font-size:10px; }
+.latex-build-log { max-height:190px;min-height:80px;overflow:auto;background:var(--glass-card,var(--panel));padding:10px 18px;border-top:1px solid var(--line);font-size:11px; }.latex-build-log>div { display:grid;gap:4px; }.latex-build-log button { justify-content:flex-start;text-align:left;font-size:11px;border:0;background:transparent;color:var(--muted);padding:6px; }.latex-build-log button.error { color:#bd5141; }.latex-build-log button.warning { color:#aa7d31; }.latex-build-log pre { white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);line-height:1.6;font:11px/1.7 Consolas,monospace; }
+.latex-alert,.latex-engine-notice { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;font-size:12px;flex-shrink:0;background:rgba(227,149,86,.08); }.latex-alert { color:#b34c3a; }.latex-alert button,.latex-engine-notice button { background:transparent;border:0;font-size:11px;padding:4px;color:inherit;box-shadow:none; }
+.latex-settings { flex-shrink:0;padding:18px 22px;background:var(--glass-card,var(--panel));border-block:1px solid var(--line);font-size:12px; }.latex-settings h3 { font-size:14px;margin:0 0 7px; }.latex-settings p { color:var(--muted);line-height:1.7;margin:0 0 12px; }.latex-settings>div:last-of-type { display:flex;flex-wrap:wrap;gap:8px; }.latex-settings button { font-size:11px;padding:8px 12px; }.latex-settings button small { color:var(--muted);font-size:10px; }.latex-settings>p:last-child { margin-top:12px;margin-bottom:0;font-size:10px; }
+.latex-welcome { flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 25px; }.latex-welcome-mark { color:var(--accent-ink);padding:22px;border-radius:24px;background:var(--accent-soft,rgba(255,122,89,.08)); }.latex-welcome h2 { font-size:29px;letter-spacing:-.04em;margin:26px 0 12px; }.latex-welcome p { font-size:13px;line-height:1.9;color:var(--muted);margin:0 0 26px; }.latex-welcome>div:last-child { display:flex;gap:10px; }.latex-welcome button { padding:11px 18px;font-size:12px; }
+.latex-modal-backdrop { position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(25,32,43,.18);backdrop-filter:blur(8px); }.latex-modal { width:min(440px,90%);max-height:75%;overflow:auto;display:flex;flex-direction:column;gap:16px;padding:28px;border:1px solid var(--glass-border,var(--line));border-radius:22px;background:var(--glass-menu,var(--panel));box-shadow:var(--float-shadow); }.latex-modal h3 { font-size:17px;margin:0; }.latex-modal header,.latex-modal>div { display:flex;align-items:center;justify-content:space-between;gap:12px; }.latex-modal>div { justify-content:flex-end; }.latex-modal p,.latex-modal small { color:var(--muted);font-size:11px;line-height:1.7; }.latex-modal>button { justify-content:space-between;font-size:11px;padding:10px; }.latex-modal button { font-size:12px; }.latex-spin { animation:latex-spin 1.2s linear infinite; }@keyframes latex-spin { to { transform:rotate(360deg); } }
+.latex-native-modal { padding:0;margin:auto;border:0;border-radius:22px;width:min(440px,calc(100vw - 40px));max-height:85vh;background:transparent;color:var(--text);overflow:visible; }
+.latex-native-modal>.latex-modal { width:100%;max-height:80vh; }
+.latex-native-modal::backdrop { background:rgba(25,32,43,.22);backdrop-filter:blur(8px); }
+@media(max-width:1300px) { .latex-layout { grid-template-columns:155px minmax(0,1fr); }.latex-pane-toolbar { padding-inline:5px; }.latex-project-bar { padding-inline:12px; } }
+@media(max-width:1060px) { .latex-bar-file>span,.latex-bar-file small { display:none; } .latex-project-bar .latex-main-file select { width:112px; } }
+@media(prefers-reduced-motion:reduce) { .latex-spin { animation:none; } }

@@ -1,0 +1,27 @@
+.project-lifecycle { margin: 20px 0; padding: 22px; border: 1px solid var(--line); border-radius: 20px; background: var(--glass-field, var(--panel)); }
+.project-progress-head, .project-stage-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.project-progress-head p, .project-stage-heading p { color: var(--muted); font-size: 12px; margin: 6px 0 12px; }
+.project-progress-head h3 { margin: 7px 0 0; }
+.project-stage-tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin: 14px 0; }
+.project-stage-tabs button { display: grid; grid-template-columns: 26px 1fr; gap: 3px 8px; text-align: left; padding: 12px; min-width: 0; }
+.project-stage-tabs button > span { grid-row: span 2; display: grid; place-items: center; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+.project-stage-tabs button small { color: var(--muted); }
+.project-stage-tabs button[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.project-connected-actions, .project-manuscripts, .project-writing-link { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.project-connected-actions button, .project-stage-heading button { font-size: 12px; }
+.project-active-method { padding: 16px; border-radius: 14px; background: var(--accent-soft); margin: 14px 0; }
+.project-active-method p, .project-entry-list p, .project-entry-list dd { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.7; }
+.project-active-method button { display: block; margin-top: 12px; }
+.project-entry-form { display: grid; gap: 12px; margin: 16px 0; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+.project-entry-form label { display: grid; gap: 6px; font-size: 12px; color: var(--muted); }
+.project-entry-form textarea, .project-entry-form input, .project-entry-form select { width: 100%; min-width: 0; box-sizing: border-box; }
+.project-entry-form > div:last-child { display: flex; gap: 8px; }
+.project-entry-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.project-entry-list details, .project-stage-history { border-top: 1px solid var(--line); padding: 14px 0; }
+.project-entry-list summary { display: flex; justify-content: space-between; gap: 12px; cursor: pointer; }
+.project-entry-list summary span { color: var(--muted); font-size: 11px; }
+.project-entry-list dt { font-weight: 600; font-size: 12px; }
+.project-entry-list dd { margin: 6px 0 14px; font-size: 13px; }
+.project-discovery-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 0; font-size: 12px; }
+.project-writing-context { border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin: 12px 0; }
+.project-writing-context p { white-space: pre-wrap; }

@@ -1,0 +1,185 @@
+/* Compact titlebar actions keep their names available on hover and keyboard focus. */
+.app-shell .titlebar { overflow: visible; }
+.top-navigation { gap: 5px; }
+.top-navigation .top-icon-button {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  -webkit-app-region: no-drag;
+}
+.top-navigation .top-icon-button:hover,
+.top-navigation .top-icon-button:focus-visible,
+.top-navigation .top-icon-button.active {
+  background: var(--control-hover);
+  color: var(--text);
+}
+.top-navigation .top-icon-button.active svg { color: var(--accent-ink); }
+.top-icon-tooltip {
+  position: absolute;
+  top: calc(100% + 9px);
+  left: 50%;
+  z-index: 60;
+  padding: 7px 10px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--panel-raised);
+  box-shadow: var(--card-shadow);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 620;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transform: translate(-50%, -4px);
+  transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+}
+.top-icon-button:is(:hover, :focus-visible) .top-icon-tooltip {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* The splash uses the shell's existing backdrop, so its artwork has no painted box. */
+.app-shell.startup-active > :is(.app-sidebar, .titlebar, .main-content) { visibility: hidden; }
+.startup-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  -webkit-app-region: drag;
+}
+.startup-window-actions {
+  position: absolute;
+  top: 23px;
+  right: 27px;
+  display: flex;
+  gap: 4px;
+  -webkit-app-region: no-drag;
+  z-index: 2;
+}
+.startup-window-actions button {
+  width: 38px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+}
+.startup-window-actions button:hover { background: var(--glass-field); }
+.startup-window-actions button:last-child:hover { background: var(--danger); color: white; }
+.startup-center {
+  display: grid;
+  justify-items: center;
+  width: min(440px, 57vh, 80vw);
+  margin-top: -24px;
+  -webkit-app-region: no-drag;
+}
+.startup-scene { position: relative; width: 100%; aspect-ratio: 1; }
+.startup-orbit {
+  position: absolute;
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 50%;
+  transform: rotate(var(--orbit-start));
+  animation: singularity-orbit var(--orbit-duration) linear infinite;
+}
+.startup-orbit-earth {
+  inset: 25%;
+  --orbit-start: -34deg;
+  --counter-start: 34deg;
+  --orbit-duration: 9s;
+}
+.startup-orbit-saturn {
+  inset: 14%;
+  --orbit-start: 138deg;
+  --counter-start: -138deg;
+  --orbit-duration: 15s;
+}
+.startup-orbit-black-hole {
+  inset: 3%;
+  --orbit-start: 248deg;
+  --counter-start: -248deg;
+  --orbit-duration: 24s;
+}
+.startup-orbit-body {
+  position: absolute;
+  top: calc(var(--planet-size) / -2);
+  left: 50%;
+  width: var(--planet-size);
+  height: var(--planet-size);
+  transform: translateX(-50%) rotate(var(--counter-start));
+  animation: singularity-counter-orbit var(--orbit-duration) linear infinite;
+}
+.startup-orbit-earth { --planet-size: 42px; }
+.startup-orbit-saturn { --planet-size: 50px; }
+.startup-orbit-black-hole { --planet-size: 56px; }
+.startup-orbit-body :is(svg, img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.startup-sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  height: 30%;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 21px rgba(255, 126, 95, .24));
+}
+.startup-wordmark {
+  margin-top: 22px;
+  color: var(--text);
+  font: italic 600 28px/1.2 "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  letter-spacing: -.04em;
+}
+.startup-splash-painting { overflow: hidden; background: #f3efe6; }
+.startup-painting { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+.startup-splash-painting .startup-window-actions { padding: 4px; border-radius: 12px; background: rgba(243, 239, 230, .85); color: #243f44; }
+.startup-splash-painting .startup-window-actions button { color: #243f44; }
+.startup-splash-painting .startup-window-actions button:hover { background: rgba(36, 63, 68, .12); }
+.startup-splash-painting .startup-window-actions button:last-child:hover { background: var(--danger); color: white; }
+.startup-painting-caption {
+  position: absolute;
+  bottom: clamp(28px, 6vh, 64px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 9px;
+  padding: 16px 34px;
+  border-radius: 20px;
+  background: rgba(243, 239, 230, .88);
+  color: #243f44;
+  box-shadow: 0 8px 32px rgba(36, 63, 68, .08);
+  pointer-events: none;
+}
+.startup-painting-caption .startup-wordmark { margin: 0; color: inherit; }
+.startup-painting-caption > span { font-size: 12px; letter-spacing: .08em; }
+.startup-splash-sail { background: #e9e2e0; }
+.startup-splash-sail .startup-painting-caption,
+.startup-splash-sail .startup-window-actions { background: rgba(253, 245, 238, .88); color: #3a3f55; }
+.startup-splash-sail .startup-window-actions button { color: #3a3f55; }
+.startup-splash-sail .startup-window-actions button:last-child:hover { color: white; }
+@keyframes singularity-orbit {
+  from { transform: rotate(var(--orbit-start)); }
+  to { transform: rotate(calc(var(--orbit-start) + 360deg)); }
+}
+@keyframes singularity-counter-orbit {
+  from { transform: translateX(-50%) rotate(var(--counter-start)); }
+  to { transform: translateX(-50%) rotate(calc(var(--counter-start) - 360deg)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .startup-orbit, .startup-orbit-body { animation: none; }
+}
+

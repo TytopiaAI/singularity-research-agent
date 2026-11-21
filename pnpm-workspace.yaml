@@ -1,0 +1,26 @@
+packages:
+  - packages/*
+
+storeDir: E:/Project/singularity/.local-data/cache/pnpm-store
+cacheDir: E:/Project/singularity/.local-data/cache/pnpm-cache
+virtualStoreDir: E:/Project/singularity/node_modules/.pnpm
+verifyStoreIntegrity: true
+strictPeerDependencies: false
+confirmModulesPurge: false
+
+allowBuilds:
+  '@deepseek-ai/dsh-subprocess-local': true
+  '@google/genai': false
+  electron-winstaller: true
+  esbuild: true
+  koffi: true
+  node-pty: true
+  protobufjs: true
+
+minimumReleaseAgeExclude:
+  - electron@44.7.0
+
+onlyBuiltDependencies:
+  - electron
+  - electron-winstaller
+  - esbuild

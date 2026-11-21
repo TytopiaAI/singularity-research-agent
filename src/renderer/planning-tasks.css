@@ -1,0 +1,168 @@
+/* Goal-like tasks, hand-drawn stickers, category tools and the extra review
+   charts. Every surface is one flat theme colour — no gradients anywhere. */
+.planning-workspace { --pw-sticker-line: var(--pw-ink); }
+
+/* 1 · Category manager: explicit "new category" and "new child of X" actions. */
+.planning-workspace .planning-category-toolbar { display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px;font-size:10px;color:var(--pw-muted); }
+.planning-workspace .planning-category-toolbar button { display:inline-flex;align-items:center;gap:5px;padding:7px 11px;border:1px solid var(--pw-line);border-radius:11px;background:var(--pw-card-soft);color:var(--pw-a-ink);font-size:10px;box-shadow:none; }
+.planning-workspace .planning-category-toolbar button:hover { background:var(--pw-a-soft); }
+.planning-workspace .planning-category-list>div button.planning-category-add-child { padding:3px 6px;border:1px dashed var(--pw-line);border-radius:8px;color:var(--pw-a-ink);box-shadow:none; }
+.planning-workspace .planning-category-list>div button.planning-category-add-child:hover { background:var(--pw-a-soft); }
+.planning-workspace .planning-collection-manage { display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:10px;padding:9px;border:1px dashed var(--pw-line);border-radius:11px;background:transparent;color:var(--pw-a-ink);font-size:10px;box-shadow:none; }
+.planning-workspace .planning-collection-manage:hover { background:var(--pw-a-soft); }
+
+/* 2 · Task card: goals with deadlines, separate from the tiny to-do list. */
+.planning-workspace .planning-tasks { display:flex;flex-direction:column;min-height:0;padding:20px 16px;background:var(--pw-b-soft); }
+.planning-workspace .planning-tasks .planning-card-head,
+.planning-workspace .planning-tasks .planning-task-progress { flex:none; }
+.planning-workspace .planning-task-progress { padding:0 0 12px;margin-bottom:10px;border-bottom:1px solid var(--pw-line); }
+.planning-workspace .planning-task-progress>span { display:flex;align-items:center;gap:5px;font-size:9px;color:var(--pw-muted);line-height:1.5; }
+.planning-workspace .planning-task-progress>strong { display:block;margin:7px 0;font-family:var(--font-sans);font-size:22px;font-weight:550;letter-spacing:-.04em; }
+.planning-workspace .planning-task-progress em { font-size:11px;font-weight:400;font-style:normal;color:var(--pw-faint); }
+.planning-workspace .planning-task-progress .planning-progress>i { background:var(--pw-b-ink); }
+.planning-workspace .planning-task-list { flex:1 1 auto;min-height:0;overflow:auto; }
+.planning-workspace .planning-task-group { margin-bottom:8px;padding:8px;border-radius:14px;background:var(--pw-card); }
+.planning-workspace .planning-task-row { display:flex;align-items:center;gap:7px;padding:3px 0; }
+.planning-workspace .planning-task-row.child { padding-left:20px; }
+.planning-workspace .planning-task-row.child .planning-task-open small { font-size:8px; }
+.planning-workspace .planning-task-check { display:grid;place-items:center;flex:none;width:17px;height:17px;border:1px solid var(--pw-line);border-radius:6px;background:var(--pw-card);color:var(--pw-card);padding:0;box-shadow:none; }
+.planning-workspace .planning-task-row.done .planning-task-check { background:var(--pw-b-ink);border-color:transparent; }
+.planning-workspace .planning-task-open { display:flex;align-items:center;gap:8px;flex:1;min-width:0;padding:2px;border:0;background:transparent;text-align:left;box-shadow:none; }
+.planning-workspace .planning-task-open>span { display:flex;flex-direction:column;gap:2px;min-width:0; }
+.planning-workspace .planning-task-open strong { overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:550;color:var(--pw-ink); }
+.planning-workspace .planning-task-open small { font-size:9px;color:var(--pw-faint); }
+.planning-workspace .planning-task-row.done .planning-task-open strong { text-decoration:line-through;color:var(--pw-faint); }
+.planning-workspace .planning-task-edit { display:grid;place-items:center;flex:none;width:22px;height:22px;padding:0;border:0;background:transparent;color:var(--pw-faint);box-shadow:none;opacity:0; }
+.planning-workspace .planning-task-row:hover .planning-task-edit,.planning-workspace .planning-task-edit:focus-visible { opacity:1; }
+.planning-workspace .planning-task-add-child { display:flex;align-items:center;gap:4px;margin:2px 0 0 20px;padding:3px 6px;border:0;border-radius:8px;background:transparent;color:var(--pw-muted);font-size:9px;box-shadow:none; }
+.planning-workspace .planning-task-add-child:hover { background:var(--pw-b-soft);color:var(--pw-b-ink); }
+.planning-workspace .planning-task-empty { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;padding:18px 10px;text-align:center;color:var(--pw-faint); }
+.planning-workspace .planning-task-empty strong { font-size:12px;color:var(--pw-ink); }
+.planning-workspace .planning-task-empty p { margin:0;font-size:9px;line-height:1.8; }
+.planning-workspace .planning-task-empty button { display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:6px 11px;border-radius:10px;background:var(--pw-b-ink);color:var(--pw-card);font-size:10px; }
+.planning-workspace .planning-checklist-hint { margin:0 0 8px;font-size:9px;line-height:1.6;color:var(--pw-faint); }
+
+/* 3 · Stickers inside the main calendar (deadline day only). */
+.planning-workspace .planning-task-markers { display:flex;flex-wrap:wrap;align-items:center;gap:1px;margin-bottom:4px; }
+/* 贴纸垫一个白底圆角方块，跟格子底色分开，星星才不会像浮在空中。 */
+.planning-workspace .planning-task-marker { display:grid;place-items:center;width:auto;min-height:0;aspect-ratio:1;padding:2px;border:0;border-radius:7px;background:var(--pw-card);line-height:0;box-shadow:none; }
+.planning-workspace .planning-task-marker:hover { box-shadow:0 0 0 1px var(--pw-line); }
+.planning-workspace .planning-task-marker.child { opacity:.78; }
+.planning-workspace .planning-task-sticker.done { opacity:.48; }
+.planning-workspace .planning-task-marker-more { font-size:9px;color:var(--pw-muted); }
+.planning-workspace .planning-calendar-month .planning-task-markers .planning-task-sticker { width:20px;height:20px; }
+.planning-workspace .planning-task-quick-add { color:var(--pw-b-ink); }
+
+/* 4 · Task dialog: sticker preview, icon grid and subtask list. */
+.planning-workspace .planning-task-preview { display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:16px;background:var(--pw-a-soft); }
+.planning-workspace .planning-task-preview>div { display:flex;flex-direction:column;gap:4px;min-width:0; }
+.planning-workspace .planning-task-preview strong { font-size:13px;font-weight:550;color:var(--pw-ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.planning-workspace .planning-task-preview span { font-size:10px;color:var(--pw-muted); }
+.planning-workspace .planning-form-block { display:grid;gap:8px;color:var(--pw-muted);font-size:11px; }
+.planning-workspace .planning-task-icon-picker { display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px; }
+.planning-workspace .planning-task-icon-picker button { display:grid;place-items:center;padding:4px;border:1px solid var(--pw-line);border-radius:12px;background:var(--pw-card);box-shadow:none; }
+.planning-workspace .planning-task-icon-picker button.selected { border-color:var(--pw-a-ink);background:var(--pw-a-soft);box-shadow:0 0 0 2px color-mix(in srgb,var(--pw-a-ink) 24%,transparent); }
+.planning-workspace .planning-task-children { margin-top:18px;padding-top:14px;border-top:1px dashed var(--pw-line); }
+.planning-workspace .planning-task-children>p { margin:8px 0;font-size:10px;color:var(--pw-faint); }
+.planning-workspace .planning-task-child-row { display:flex;align-items:center;gap:8px;padding:6px 8px;margin-top:6px;border-radius:11px;background:var(--pw-card-soft);font-size:10px; }
+.planning-workspace .planning-task-child-row>span { flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--pw-ink); }
+.planning-workspace .planning-task-child-row>small { color:var(--pw-faint);font-size:9px; }
+.planning-workspace .planning-task-child-row>button { display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:0;border-radius:8px;background:var(--pw-card);color:var(--pw-muted);font-size:9px;box-shadow:none; }
+.planning-workspace .planning-task-child-add { display:flex;gap:8px;margin-top:10px; }
+.planning-workspace .planning-task-child-add input { flex:1;min-width:0; }
+.planning-workspace .planning-task-child-add button { display:inline-flex;align-items:center;gap:4px;flex:none;padding:0 12px;border-radius:11px;background:var(--pw-b-ink);color:var(--pw-card);font-size:10px; }
+
+/* 5 · Richer month review: flat SVG rings, daily bars, compare bars, reward dots. */
+.planning-workspace .planning-ring { position:relative;background:transparent!important;box-shadow:none; }
+.planning-workspace .planning-ring>svg { position:absolute;inset:0;width:100%;height:100%; }
+.planning-workspace .planning-ring>div { position:absolute;inset:22%;width:auto;height:auto;border-radius:50%;background:var(--pw-card); }
+.planning-workspace .planning-review-task-line { display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;border-top:1px dashed var(--pw-line);font-size:10px;color:var(--pw-muted); }
+.planning-workspace .planning-review-task-line b { color:var(--pw-b-ink);font-weight:600; }
+.planning-workspace .planning-review-extra { display:grid;grid-template-columns:1.35fr 1.15fr .9fr;gap:16px;margin-top:22px;padding-top:20px;border-top:1px dashed var(--pw-line); }
+.planning-workspace .planning-review-card { display:flex;flex-direction:column;gap:10px;min-width:0;padding:16px;border-radius:18px;background:var(--pw-card-soft); }
+.planning-workspace .planning-review-card>header { margin-bottom:0; }
+.planning-workspace .planning-review-card h3 { margin:5px 0 0;font-size:12px;font-weight:550;color:var(--pw-ink); }
+.planning-workspace .planning-review-metric { display:flex;align-items:baseline;gap:8px;flex-wrap:wrap; }
+.planning-workspace .planning-review-metric strong { font-family:var(--font-sans);font-size:22px;font-weight:550;letter-spacing:-.04em;color:var(--pw-ink); }
+.planning-workspace .planning-review-metric span { font-size:9px;color:var(--pw-muted); }
+.planning-workspace .planning-review-chart { flex:1;display:flex;flex-direction:column;justify-content:center; }
+.planning-workspace .planning-review-chart svg { display:block;width:100%;height:auto; }
+.planning-workspace .planning-review-legend { display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:9px;color:var(--pw-muted); }
+.planning-workspace .planning-review-legend span { display:inline-flex;align-items:center;gap:4px; }
+.planning-workspace .planning-review-legend i { width:8px;height:8px;border-radius:2px; }
+.planning-workspace .planning-review-legend i.dot { border-radius:50%; }
+.planning-workspace .planning-review-goal { display:flex;align-items:center;gap:14px;flex:1; }
+.planning-workspace .planning-review-goal .planning-ring { width:104px;height:104px;flex:none;padding:0; }
+.planning-workspace .planning-review-goal .planning-ring strong { font-size:17px; }
+.planning-workspace .planning-review-goal>div { flex:1;min-width:0; }
+.planning-workspace .planning-review-goal p { margin:0 0 10px;font-size:10px;color:var(--pw-muted); }
+.planning-workspace .planning-review-goal p b { color:var(--pw-ink); }
+.planning-workspace .planning-review-compare>div { display:flex;align-items:center;gap:8px;margin-top:9px;font-size:9px;color:var(--pw-muted); }
+.planning-workspace .planning-review-compare>div>span { width:58px;flex:none; }
+.planning-workspace .planning-review-compare .planning-progress { flex:1;height:6px; }
+.planning-workspace .planning-review-compare b { min-width:30px;text-align:right;color:var(--pw-ink);font-weight:550; }
+.planning-workspace .planning-review-compare>div.minor { opacity:.78; }
+.planning-workspace .planning-review-mini-stats { display:flex;justify-content:space-between;gap:6px;padding-top:8px;border-top:1px dashed var(--pw-line);font-size:9px;color:var(--pw-muted); }
+.planning-workspace .planning-review-mini-stats b { color:var(--pw-ink);font-weight:600; }
+.planning-workspace .planning-review-footnote { margin:0;font-size:9px;line-height:1.6;color:var(--pw-faint); }
+.planning-workspace .planning-review-earned { display:flex;flex-direction:column;justify-content:center;gap:3px;flex:1; }
+.planning-workspace .planning-review-earned strong { font-family:var(--font-sans);font-size:30px;font-weight:550;letter-spacing:-.05em;color:var(--pw-ink); }
+.planning-workspace .planning-review-earned em { font-size:12px;font-weight:400;font-style:normal;color:var(--pw-faint); }
+.planning-workspace .planning-review-earned span { font-size:9px;color:var(--pw-muted); }
+.planning-workspace .planning-review-dots { display:grid;grid-template-columns:repeat(7,14px);gap:5px;justify-content:start; }
+.planning-workspace .planning-review-dots i { width:14px;height:14px;border-radius:4px;background:var(--pw-line); }
+.planning-workspace .planning-review-dots i.earned { background:var(--pw-b-ink); }
+.planning-workspace .planning-review-dots i.today { box-shadow:inset 0 0 0 2px var(--pw-a-ink); }
+
+/* 当天安排按内容收高。宽屏上任务和待办清单接住月视图旁边剩下的高度。 */
+.planning-workspace .planning-todos { min-height:0;flex:none; }
+.planning-workspace .planning-todo-list { min-height:0;max-height:140px;flex:none; }
+@container planning-desk (min-width:901px) {
+  .planning-workspace .planning-tasks,
+  .planning-workspace .planning-checklist { display:flex;flex-direction:column;min-height:0; }
+  .planning-workspace .planning-checklist-items,
+  .planning-workspace .planning-task-list { flex:1 1 auto;min-height:0;max-height:none;overflow:auto; }
+}
+@container planning-desk (max-width:1200px) {
+  .planning-workspace .planning-review-extra { grid-template-columns:1fr 1fr; }
+  .planning-workspace .planning-review-card:last-child { grid-column:1/-1; }
+}
+@container planning-desk (max-width:700px) {
+  .planning-workspace .planning-review-extra { grid-template-columns:1fr; }
+  .planning-workspace .planning-review-card:last-child { grid-column:auto; }
+  .planning-workspace .planning-task-icon-picker { grid-template-columns:repeat(5,minmax(0,1fr)); }
+}
+
+/* 月度回顾：只留活跃天数、当前连续、每天的完成节奏，再挂一张「知识地层」。 */
+.planning-workspace .planning-rhythm { display:grid;grid-template-columns:200px minmax(0,1fr);gap:22px;margin-top:16px; }
+.planning-workspace .planning-rhythm-metrics { display:flex;flex-direction:column;justify-content:center;gap:16px; }
+.planning-workspace .planning-rhythm-metrics>div { display:grid;gap:3px;align-content:start; }
+.planning-workspace .planning-rhythm-metrics small { font-size:10px;color:var(--pw-faint); }
+.planning-workspace .planning-rhythm-metrics strong { font-size:34px;font-weight:550;line-height:1.05;letter-spacing:-.045em;color:var(--pw-ink);font-variant-numeric:tabular-nums; }
+.planning-workspace .planning-rhythm-metrics em { font-size:12px;font-weight:400;font-style:normal;letter-spacing:0;color:var(--pw-faint); }
+.planning-workspace .planning-rhythm-metrics span { font-size:10px;line-height:1.6;color:var(--pw-muted); }
+.planning-workspace .planning-rhythm-chart { display:flex;flex-direction:column;gap:10px;min-width:0;padding-left:24px;border-left:1px dashed var(--pw-line); }
+.planning-workspace .planning-rhythm-head { display:flex;justify-content:space-between;align-items:baseline;gap:14px;font-size:11px;color:var(--pw-ink); }
+.planning-workspace .planning-rhythm-head b { font-size:10px;font-weight:450;color:var(--pw-faint); }
+.planning-workspace .planning-strata { margin-top:18px;padding:16px 0 0;border-radius:0;background:transparent;color:var(--pw-ink);border-top:1px dashed var(--pw-line); }
+.planning-workspace .planning-strata-head { display:flex;gap:12px;align-items:flex-start; }
+.planning-workspace .planning-strata-icon { display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:11px;background:var(--pw-card-soft);color:var(--pw-ink); }
+.planning-workspace .planning-strata-head h3 { margin:1px 0 0;font-size:15px;font-weight:600;color:var(--pw-ink); }
+.planning-workspace .planning-strata-head p { margin:6px 0 0;max-width:680px;font-size:12px;line-height:1.7;color:var(--pw-muted); }
+.planning-workspace .planning-strata-stage { display:flex;gap:8px;margin-top:14px;padding:12px 12px 8px;border-radius:12px;background:var(--pw-card-soft);border:1px solid var(--pw-line-soft); }
+.planning-workspace .planning-strata-months { display:flex;flex:none;flex-direction:column;width:36px; }
+.planning-workspace .planning-strata-months span { display:flex;align-items:center;font-size:12px;color:var(--pw-muted);font-variant-numeric:tabular-nums; }
+.planning-workspace .planning-strata-canvas { flex:1;min-width:0; }
+.planning-workspace .planning-strata-canvas svg { display:block;width:100%; }
+.planning-workspace .planning-strata-canvas path { stroke:var(--pw-card-soft);stroke-width:1.4px;stroke-linejoin:round;vector-effect:non-scaling-stroke;transition:opacity .18s ease; }
+.planning-workspace .planning-strata-canvas g { transition:opacity .18s ease; }
+.planning-workspace .planning-strata-hint { margin:12px 2px 0;font-size:12px;line-height:1.6;color:var(--pw-muted); }
+.planning-workspace .planning-strata-legend { display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px;font-size:12px;color:var(--pw-muted); }
+.planning-workspace .planning-strata-legend span { display:inline-flex;align-items:center;gap:6px; }
+.planning-workspace .planning-strata-legend i { flex:none;width:8px;height:8px;border-radius:50%; }
+@container planning-desk (max-width:760px) {
+  .planning-workspace .planning-rhythm { grid-template-columns:1fr;gap:18px; }
+  .planning-workspace .planning-rhythm-metrics { flex-direction:row;justify-content:flex-start;gap:36px; }
+  .planning-workspace .planning-rhythm-chart { padding-left:0;border-left:0;padding-top:16px;border-top:1px dashed var(--pw-line); }
+  .planning-workspace .planning-strata-stage { padding:12px; }
+}

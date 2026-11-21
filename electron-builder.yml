@@ -1,0 +1,57 @@
+appId: ai.singularity.desktop
+productName: Singularity
+copyright: Copyright © 2026 Singularity
+
+directories:
+  buildResources: build
+  output: release
+
+asar: false
+compression: normal
+
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - build/icon.png
+  - build/icon-ui.png
+  - build/icon.ico
+  - packages/harness-extension/package.json
+  - packages/harness-extension/index.js
+  - packages/harness-extension/review.js
+  - packages/harness-extension/answer-colors.js
+  - packages/harness-extension/client.js
+  - runtime/**/*
+  - skills/bilingual-academic-paragraph/SKILL.md
+  - from: build/app-update.json
+    to: singularity-update.json
+  - third-party/harness/LICENSE
+  - package.json
+  - node_modules/**/*
+  - '!**/*.map'
+  - '!**/node_modules/**/{test,tests,__tests__,example,examples}/**/*'
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.ico
+  executableName: Singularity
+  legalTrademarks: Singularity
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: Singularity
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  artifactName: Singularity-Setup-${version}-x64.${ext}
+  include: build/installer.nsh
+  runAfterFinish: true
+  unicode: true
+
+publish: null

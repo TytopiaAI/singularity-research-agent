@@ -1,16 +1,18 @@
 # Singularity
 
-Singularity 是跑在 Windows 上的本地科研助手。它把对话、论文库、领域综述、写作和计划放在同一台电脑里，论文和密钥都留在本地。
+Singularity，科研 agent 助手，基于 DeepSeek Harness，人与 AI 的深度协作，把科研这件事做得更具体、更完整：
+
+内置真正的论文阅读器，划重点、查脉络、记笔记、溯源原文，把文献真正内化成自己的思考。把全流程串联在一个工作台里，从领域追踪与找论文 → 深度精读笔记 → 研究项目与 idea 迭代 → 计划管理 → 深度 LaTeX 论文写作，集成优秀 Skill。
 
 ![首页对话](docs/images/home.jpg)
 
 ## 功能概览
 
-- **首页对话**：研究对话。输入 `@` 可以引用你建好的领域，或论文库里的一篇、多篇论文。
+- **首页对话**：基于 DeepSeek Harness。输入 `@` 可以引用你建好的领域，或论文库里的一篇、多篇论文。
 - **论文库**：导入 PDF，阅读、检索、翻译和做笔记。原文件不会被删掉。
 - **科研发现**：按领域积累论文，生成可追溯的综述，并记下你自己的研究笔记。
-- **研究项目与写作**：把论文材料收进项目，再按段落写中英对照的文稿。
-- **语音对话**：默认使用 Windows 自带的识别和朗读。也可以改用 DeepSeek 或 MiniMax。
+- **研究项目与 LaTeX 写作**：使用 LaTeX 进行写作。
+- **语音对话**：接入 Breeze TTS 2 模型、MiniMax 模型或其他语音模型。
 - **计划**：月历、任务和待办。
 - **图片生成**：可选的 MiniMax 图片接口。
 
@@ -121,12 +123,8 @@ Windows 方式在欢迎向导里直接选即可。云端语音只在你开启语
 
 ## 数据放在哪里
 
-开发时默认数据目录是项目下的 `.local-data`（数据库、缓存、日志、加密后的密钥）。它不会被 Git 跟踪。换一台机器或交给别人时，不要把这个目录一起拷走。
-
-可以用环境变量 `SINGULARITY_DATA_ROOT` 指到别的空目录。安装版会把数据放在安装目录上一级的 `SingularityData` 文件夹。
+开发时默认数据目录是项目下的 `.local-data`（数据库、缓存、日志、加密后的密钥）。可以用环境变量 `SINGULARITY_DATA_ROOT` 指到别的空目录。安装版会把数据放在安装目录上一级的 `SingularityData` 文件夹。
 
 ## 许可证与致谢
 
-你可以把这个仓库克隆到自己的电脑上安装和运行，论文、笔记和 API Key 不会跟着仓库一起下载。请不要把源码再发布成其他产品。
-
-界面运行在 Electron 上，研究对话使用 [DeepSeek Harness](third-party/harness/README.md)，PDF 阅读使用 PDF.js。这些组件适用它们各自的许可证。
+你可以把这个仓库克隆到自己的电脑上安装和运行，界面运行在 Electron 上，研究对话使用 [DeepSeek Harness](https://github.com/TytopiaAI/singularity-research-agent/blob/main/third-party/harness/README.md)，PDF 阅读使用 PDF.js。这些组件适用它们各自的许可证。

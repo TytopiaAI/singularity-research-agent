@@ -4,7 +4,7 @@ Singularity，科研 agent 助手，基于 DeepSeek Harness，人与 AI 的深�
 
 内置真正的论文阅读器，划重点、查脉络、记笔记、溯源原文，把文献真正内化成自己的思考。把全流程串联在一个工作台里，从领域追踪与找论文 → 深度精读笔记 → 研究项目与 idea 迭代 → 计划管理 → 深度 LaTeX 论文写作，集成优秀 Skill。
 
-![首页对话](docs/images/home.jpg)
+![首页对话](docs/images/home-chat.jpg)
 
 ## 功能概览
 
@@ -20,7 +20,7 @@ Singularity，科研 agent 助手，基于 DeepSeek Harness，人与 AI 的深�
 
 ![论文阅读笔记化](docs/images/reader.jpg)
 
-![制定计划和安排](docs/images/planning.jpg)
+![制定计划和安排](docs/images/planning-desk.jpg)
 
 ![语音对话](docs/images/voice.jpg)
 

@@ -20,7 +20,7 @@ Singularity，科研 agent 助手，基于 DeepSeek Harness，人与 AI 的深�
 
 ![论文阅读笔记化](docs/images/reader.jpg)
 
-![制定计划和安排](docs/images/planning-desk.jpg)
+![制定计划和安排](docs/images/planning-wide.jpg)
 
 ![语音对话](docs/images/voice.jpg)
 
